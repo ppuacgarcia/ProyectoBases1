@@ -50,7 +50,7 @@ def VentanaMenu(pw):
         f1.destroy()
         
     global img2
-    img2 = ImageTk.PhotoImage(Image.open('X.png'))
+    img2 = ImageTk.PhotoImage(Image.open('Images/X.png'))
        
     #Boton cerrar menu
     Button(f1,image=img2, command=delete, border=0, activebackground='#707070',bg='#707070').place(x=5, y = 10)
