@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 
 def MenP(pw):
 
-    fMenuP = Frame(pw,width=350,height=675,bg='#707070')
+    fMenuP = Frame(pw,width=1200,height=675,bg='#707070')
     fMenuP.place(x=0, y=0)
 
     def cmd1():
@@ -37,7 +37,7 @@ def MenP(pw):
         buttons.bind("<Leave>", on_leave)
         buttons.place(x=x, y=y)
         
-    Label(text='Menú',bg='#707070',fg='#FFFFFF', font=('Arial', 42,'bold') ).place(x=525,y=10)
+    Label(fMenuP, text='Menú',bg='#707070',fg='#FFFFFF', font=('Arial', 42,'bold') ).place(x=525,y=10)
     btnmenu(fMenuP, 400, 150, 'registro adolescentes', '#FF4e10', '#FFFFFF', cmd1,'Arial', 16,'bold',)
     btnmenu(fMenuP, 400, 250, 'registro colaboradores', '#FF4e10', '#FFFFFF', cmd2,'Arial', 16,'bold', )
     btnmenu(fMenuP, 400, 350, 'Eventos', '#FF4e10', '#FFFFFF', cmd3,'Arial', 16,'bold',)
