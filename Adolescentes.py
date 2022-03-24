@@ -50,7 +50,6 @@ def Ent(textvar, width, x, y):
 Ent(name, 155, 175, 105)
 Ent(fechanac, 135, 295, 140)
 Ent(Sexo, 155, 175, 175)
-Ent(Rango, 155, 175, 210)
 Ent(Contacto, 155, 175, 300)
 Ent(Telefono, 155, 175, 335)
 Ent(TipoSangre, 144, 240, 370)
