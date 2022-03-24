@@ -85,3 +85,13 @@ def ColForm(pw):
         buttons.place(x=x, y=y)
 
     btn(w, 980, 600, 'guardar', '#000000', '#FF4e10', Sav,'Arial', 12,'bold',)
+    def chk(txt,x,y):
+        btn=Button(w)
+        check=Checkbutton(w,text=txt)
+        check.config(bg=bglabel,font=(fuenteG,13,'bold'))
+        check.place(x=x,y=y)
+    chk('Colaboradores',posx,500)
+    chk('Adolescentes',posx,525)
+    chk('Formularios Colaboradores',posx,550)
+    chk('Formularios Adolescentes',posx+250,500)
+    chk('Eventos',posx+250,525)
