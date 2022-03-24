@@ -1,6 +1,9 @@
+from calendar import calendar
 from tkinter import *
+from turtle import width
 from PIL import Image, ImageTk
 from Menu import *
+from tkcalendar import *
 
 def ColForm(pw):
     
@@ -59,7 +62,9 @@ def ColForm(pw):
         
 
     Ent(name, 155, 175, 105)
-    Ent(fechanac, 135, 295, 140)
+    #Ent(fechanac, 135, 295, 140)
+    cal=DateEntry(w,width=30)
+    cal.place(x=295,y=140)
     Ent(Sexo, 155, 175, 175)
     Ent(Rango, 155, 175, 210)
     Ent(Contacto, 155, 175, 300)
@@ -83,7 +88,7 @@ def ColForm(pw):
         buttons.bind("<Enter>", on_enter)
         buttons.bind("<Leave>", on_leave)
         buttons.place(x=x, y=y)
-
+    
     btn(w, 980, 600, 'guardar', '#000000', '#FF4e10', Sav,'Arial', 12,'bold',)
     def chk(txt,x,y):
         btn=Button(w)
@@ -95,3 +100,9 @@ def ColForm(pw):
     chk('Formularios Colaboradores',posx,550)
     chk('Formularios Adolescentes',posx+250,500)
     chk('Eventos',posx+250,525)
+    
+    
+     
+    
+  
+

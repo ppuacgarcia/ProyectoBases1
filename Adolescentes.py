@@ -1,7 +1,7 @@
 from tkinter import *
 from PIL import Image, ImageTk
 from Menu import *
-
+from tkcalendar import *
 def AdolForm(pw):
     
     
@@ -58,7 +58,8 @@ def AdolForm(pw):
         
 
     Ent(name, 155, 175, 105)
-    Ent(fechanac, 135, 295, 140)
+    cal=DateEntry(w,width=30)
+    cal.place(x=295,y=140)
     Ent(Sexo, 155, 175, 175)
     Ent(Contacto, 155, 175, 300)
     Ent(Telefono, 155, 175, 335)

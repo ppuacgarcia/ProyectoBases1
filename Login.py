@@ -65,8 +65,6 @@ EntryPassword.place(x=posx,y=posy+340)
 #button
 Enter=Button(flog, text="Entrar",font=(fonttxt,13,'bold'),width=10,command=Correcto)
 Enter.place(x=posx,y=posy+370)
-
-
 pw.mainloop()
 
 
