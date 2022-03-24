@@ -1,24 +1,25 @@
 from tkinter import *
 from PIL import Image, ImageTk
+from Menu import *
 
 def ColForm(pw):
     
 
-    w = Frame(pw, bg='#707070')
-    w.geometry('1200x675')
+    w = Frame(pw,width=1200,height=675,bg='#707070')
     w.place(x=0, y=0)
     fuenteG = font=('Comic Sans MS', 19,'bold')
     fuenteP = font=('Comic Sans MS', 15,'bold')
     bglabel = '#707070'
     fglabel = '#FFFFFF'
     posx = 80
+    menu(w)
 
     def Sav():
         None
 
     #Labels formulario
     def lab(text, font, bg, fg, x, y):
-        labe = Label(text=text, font=font, bg=bg, foreground=fg)
+        labe = Label(w,text=text, font=font, bg=bg, foreground=fg)
         labe.pack()
         labe.place(x=x, y=y)
 
@@ -46,7 +47,7 @@ def ColForm(pw):
     Alergias = StringVar()
 
     def Ent(textvar, width, x, y):
-        Entr = Entry(textvariable=textvar, width=width)
+        Entr = Entry(w,textvariable=textvar, width=width)
         Entr.pack()
         Entr.place(x=x, y=y)
         
