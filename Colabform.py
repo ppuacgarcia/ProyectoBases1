@@ -12,10 +12,16 @@ def ColForm(pw):
     bglabel = '#707070'
     fglabel = '#FFFFFF'
     posx = 80
-    menu(w)
 
     def Sav():
         None
+        
+    def cmd():
+        w.destroy()
+        
+    global img1
+    img1 = ImageTk.PhotoImage(Image.open('Images/HM.png')) 
+    Button(w, command = cmd, image=img1, border=0,activebackground='#000000', bg='#707070').place(x=5, y = 10)
 
     #Labels formulario
     def lab(text, font, bg, fg, x, y):

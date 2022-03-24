@@ -57,9 +57,9 @@ def menu(pw):
         #Boton cerrar menu
         Button(f1,image=img2, command=delete, border=0, activebackground='#707070',bg='#707070').place(x=5, y = 10)
 
-    global img1
-    img1 = ImageTk.PhotoImage(Image.open('Images/HM.png'))
-    Button(pw, command = VentanaMenu, image=img1, border=0,activebackground='#000000', bg='#000000').place(x=5, y = 10)
+    #global img1
+    #img1 = ImageTk.PhotoImage(Image.open('Images/HM.png'))
+    #Button(pw, command = VentanaMenu, image=img1, border=0,activebackground='#000000', bg='#000000').place(x=5, y = 10)
 
 
 
