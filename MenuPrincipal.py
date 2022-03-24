@@ -1,6 +1,8 @@
 from tkinter import *
 from PIL import Image, ImageTk
 
+from Colabform import ColForm
+
 def MenP(pw):
 
     fMenuP = Frame(pw,width=1200,height=675,bg='#707070')
@@ -10,7 +12,8 @@ def MenP(pw):
         print('registro adolescentes')
         
     def cmd2():
-        print('registro colaboradores')
+        ColForm(pw)
+        fMenuP.destroy()
 
     def cmd3():
         print('Eventos')
