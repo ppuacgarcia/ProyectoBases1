@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 
 from Colabform import ColForm
+from Adolescentes import AdolForm
 
 def MenP(pw):
 
@@ -9,11 +10,10 @@ def MenP(pw):
     fMenuP.place(x=0, y=0)
 
     def cmd1():
-        print('registro adolescentes')
+        AdolForm(pw)
         
     def cmd2():
         ColForm(pw)
-        fMenuP.destroy()
 
     def cmd3():
         print('Eventos')
