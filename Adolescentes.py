@@ -1,75 +1,83 @@
+from optparse import Values
 from tkinter import *
 from PIL import Image, ImageTk
 from Menu import *
 from tkinter import ttk
 from tkcalendar import *
-def AdolForm(pw):
+import mariadb
+class AdolForm:
     
-    
-    w = Frame(pw,width=1200,height=675,bg='#707070')
-    w.place(x=0, y=0)
-    fuenteG = font=('Comic Sans MS', 19,'bold')
-    fuenteP = font=('Comic Sans MS', 15,'bold')
-    bglabel = '#707070'
-    fglabel = '#FFFFFF'
-    posx = 80
+    def __init__(self,ventanaPrincipal):
+        self.w = Frame(ventanaPrincipal,width=1200,height=675,bg='#707070')
+        self.w.place(x=0, y=0)
+        self.fuenteG = font=('Comic Sans MS', 19,'bold')
+        self.fuenteP = font=('Comic Sans MS', 15,'bold')
+        self.bglabel = '#707070'
+        self.fglabel = '#FFFFFF'
+        self.posx = 80
+        self.img1 = ImageTk.PhotoImage(Image.open('Images/HM.png')) 
+        Button(self.w, command = self.cmd, image=self.img1, border=0,activebackground='#000000', bg='#707070').place(x=5, y = 10)
 
-    def Sav():
+        #Etiquetas
+        self.lab('Registro Adolescentes', self.fuenteG, self.bglabel, self.fglabel, 490, 10)
+        self.lab('Datos Generales', self.fuenteG, self.bglabel, self.fglabel, self.posx, 55)
+        self.lab('Nombre', self.fuenteP, self.bglabel, self.fglabel, self.posx, 95)
+        self.lab('Fecha de Nacimiento', self.fuenteP, self.bglabel, self.fglabel, self.posx, 130)
+        self.lab('Genero', self.fuenteP, self.bglabel, self.fglabel, self.posx, 165)
+        self.lab('Informacion de Enmergencia', self.fuenteG, self.bglabel, self.fglabel, self.posx, 240)
+        self.lab('Contacto', self.fuenteP, self.bglabel, self.fglabel, self.posx, 290)
+        self.lab('Telefono', self.fuenteP, self.bglabel, self.fglabel, self.posx, 325)
+        self.lab('Tipo de Sangre', self.fuenteP, self.bglabel, self.fglabel, self.posx, 360)
+        self.lab('Alergias', self.fuenteP, self.bglabel, self.fglabel, self.posx, 395)
+
+        #Cuadros de texto
+        self.nombre=self.Ent(self.w,155,175,105)
+        #self.genero=self.Ent(self.w,155,175,175)
+        self.contacto=self.Ent(self.w,155, 175, 300)
+        self.telefono=self.Ent(self.w,25, 175, 335)
+        self.tipoSangre=self.Ent(self.w,144, 240, 370)
+        self.alergia=self.Ent(self.w,25, 175, 405)
+
+        #ComboBox
+        self.genero=ttk.Combobox(self.w,width=155)
+        self.genero['values']=('Masculino','Femenino')
+        self.genero.current(0)
+        self.genero["state"]="readonly"
+        self.genero.pack()
+        self.genero.place(x=175,y=175)
+
+        #Calendario
+        self.calendario=DateEntry(self.w,width=30)
+        self.calendario.place(x=295,y=140)
+
+        #Botones
+        self.guardarAdolecente=self.btn(self.w, 980, 600, 'Guardar', '#000000', '#FF4e10', self.agregarRegistro,'Arial', 12,'bold',18,2)
+        self.guardarTelefono=self.btn(self.w,self.posx+375,335,'Guardar Telefono','#000000','#FF4e10',self.agregarTelefono,'Arial',12,'bold',13,1)
+        self.guardarAlergia=self.btn(self.w,self.posx+375,405,'Guardar Alergia','#000000','#FF4e10',self.agregarAlergia,'Arial',12,'bold',13,1)
+
+        #Listas
+        self.listaTelefono=self.tb(self.w,707,335)
+        self.listaAlergia=self.tb(self.w,707,405)
+
+    def Sav(self):
         None
         
-    def cmd():
-        w.destroy()
-    
-    global img1
-    img1 = ImageTk.PhotoImage(Image.open('Images/HM.png')) 
-    Button(w, command = cmd, image=img1, border=0,activebackground='#000000', bg='#707070').place(x=5, y = 10)
+    def cmd(self):
+        self.w.destroy()
 
-    #Labels formulario
-    def lab(text, font, bg, fg, x, y):
-        labe = Label(w,text=text, font=font, bg=bg, foreground=fg)
+    #Metodos para objetos del frame
+    def lab(self,text, font, bg, fg, x, y):
+        labe = Label(self.w,text=text, font=font, bg=bg, foreground=fg)
         labe.pack()
         labe.place(x=x, y=y)
 
-
-    lab('Registro Adolescentes', fuenteG, bglabel, fglabel, 490, 10)
-    lab('Datos Generales', fuenteG, bglabel, fglabel, posx, 55)
-    lab('Nombre', fuenteP, bglabel, fglabel, posx, 95)
-    lab('Fecha de Nacimiento', fuenteP, bglabel, fglabel, posx, 130)
-    lab('Sexo', fuenteP, bglabel, fglabel, posx, 165)
-    lab('Informacion de Enmergencia', fuenteG, bglabel, fglabel, posx, 240)
-    lab('Contacto', fuenteP, bglabel, fglabel, posx, 290)
-    lab('Telefono', fuenteP, bglabel, fglabel, posx, 325)
-    lab('Tipo de Sangre', fuenteP, bglabel, fglabel, posx, 360)
-    lab('Alergias', fuenteP, bglabel, fglabel, posx, 395)
-
-
-    name = StringVar()
-    fechanac = StringVar()
-    Sexo = StringVar()
-    Rango = StringVar()
-    Contacto = StringVar()
-    Telefono = int()
-    TipoSangre = StringVar()
-    Alergias = StringVar()
-
-    def Ent(textvar, width, x, y):
-        Entr = Entry(w,textvariable=textvar, width=width)
+    def Ent(self,w, width, x, y):
+        Entr = Entry(w, width=width)
         Entr.pack()
         Entr.place(x=x, y=y)
+        return Entr
         
-
-    Ent(name, 155, 175, 105)
-    cal=DateEntry(w,width=30)
-    cal.place(x=295,y=140)
-    Ent(Sexo, 155, 175, 175)
-    Ent(Contacto, 155, 175, 300)
-    Ent(Telefono, 25, 175, 335)
-    Ent(TipoSangre, 144, 240, 370)
-    Ent(Alergias, 25, 175, 405)
-
-
-    
-    def btn(f1, x, y, text, bcolor, fcolor, command, font, siz, tipe,wdt,ht):
+    def btn(self,w, x, y, text, bcolor, fcolor, command, font, siz, tipe,wdt,ht):
         #Botones para menu
         def on_enter(e):
             buttons['background'] = bcolor
@@ -84,13 +92,59 @@ def AdolForm(pw):
         buttons.bind("<Enter>", on_enter)
         buttons.bind("<Leave>", on_leave)
         buttons.place(x=x, y=y)
+        return buttons
 
-    btn(w, 980, 600, 'guardar', '#000000', '#FF4e10', Sav,'Arial', 12,'bold',18,2)
-    btn(w,posx+375,335,'guardar telefono','#000000','#FF4e10',Sav,'Arial',12,'bold',13,1)
-    btn(w,posx+375,405,'guardar alergia','#000000','#FF4e10',Sav,'Arial',12,'bold',13,1)
-    def tb(w,x,y):
+    def tb(self,w,x,y):
         tabla=Listbox(w)
         tabla.place(x=x,y=y)
-        tabla.config(height=2)
-    tb(w,707,335)
-    tb(w,707,405)
+        tabla.config(height=1)
+        return tabla
+
+    #Agregar datos a las listas
+    def agregarTelefono(self):
+        if len(self.telefono.get())!=0:
+            self.listaTelefono.insert(END,self.telefono.get())
+
+    def agregarAlergia(self):
+        if len(self.alergia.get())!=0:
+            self.listaAlergia.insert(END,self.alergia.get())
+
+    #Metodos para ingresar a la base de datos
+    def consultaBD(self,query):
+        try:
+            conn=mariadb.connect(
+                host="localhost",
+                user="root",
+                password="Kamado_Tanjiro_12",
+                database="mydb",
+                autocommit=True
+            )
+        except mariadb.Error as e:
+            print("Error al conectarse a la bd",e)
+        cur = conn.cursor()
+        cur.execute(query)
+        return cur
+
+
+    def agregarRegistro(self):
+        if len(self.nombre.get())!=0 and len(self.contacto.get())!=0 and len(self.tipoSangre.get())!=0:
+            query="INSERT INTO mydb.adolescente (nombre,genero,fechaNacimiento) VALUES ('" + self.nombre.get() + "', '" + self.genero.get() + "','" + str(self.calendario.get_date()) + "');"
+            self.consultaBD(query)
+            query="SELECT last_insert_id()"
+            print("holaaaaaaaaaaaa")
+            id = str(self.consultaBD(query)["values"][0])
+            print(id)
+            '''query="INSERT INTO mydb.informacionenmergenica (tipoSangre,encargado,Adolescente_idAdolescente) VALUES ('" + self.tipoSangre.get() + "', '" + self.contacto.get() + "','" + id + "');"
+            consultaBD(query)
+            query="SELECT idInformacion FROM mydb.informacionenmergenica WHERE Adolescente_idAdolescente='" + id + "'"
+            id=consultaBD(query)
+            for telefono in self.listaTelefono.get(0,END):
+                query="INSERT INTO mydb.telefono (telefono,informacionEnmergencia_idContacto) VALUES ('" + telefono + "', '" + id + "');"
+                consultaBD(query)
+            for alergia in self.listaAlergia.get(0,END):
+                query="INSERT INTO mydb.alergia (nombre,informacionEnmergencia_idContacto) VALUES ('" + alergia + "', '" + id + "');"
+                consultaBD(query)'''
+            self.nombre.delete(0,END)
+            self.nombre.focus()
+        else:
+            self.mensaje['text']="El nombre y clave no pueden estar vacias"

@@ -2,8 +2,11 @@ from tkinter import *
 from PIL import Image, ImageTk
 
 from Colabform import ColForm
-from Adolescentes import AdolForm
+
+from Adolescentes import *
 from Eventos import EvtForm
+
+
 
 def MenP(pw):
 
