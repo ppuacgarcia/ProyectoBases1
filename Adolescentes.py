@@ -88,11 +88,9 @@ def AdolForm(pw):
     btn(w, 980, 600, 'guardar', '#000000', '#FF4e10', Sav,'Arial', 12,'bold',18,2)
     btn(w,posx+375,335,'guardar telefono','#000000','#FF4e10',Sav,'Arial',12,'bold',13,1)
     btn(w,posx+375,405,'guardar alergia','#000000','#FF4e10',Sav,'Arial',12,'bold',13,1)
-    def tb(text,pox,poy):
-        tabla=ttk.Treeview(w,columns=1)
-        tabla.heading(text=text,column=0)
-        tabla.place(x=pox,y=poy)
-        tabla.config(height=1)
-
-    tb('telefono',707, 335)
-    tb('alergias',707,405)
+    def tb(w,x,y):
+        tabla=Listbox(w)
+        tabla.place(x=x,y=y)
+        tabla.config(height=2)
+    tb(w,707,335)
+    tb(w,707,405)

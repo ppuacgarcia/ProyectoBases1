@@ -107,7 +107,7 @@ def ColForm(pw):
     def tb(w,x,y):
         tabla=Listbox(w)
         tabla.place(x=x,y=y)
-
+        tabla.config(height=2)
     tb(w,707,335)
     tb(w,707,405)
     
