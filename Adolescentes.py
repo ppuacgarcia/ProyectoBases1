@@ -115,34 +115,41 @@ class AdolForm:
             conn=mariadb.connect(
                 host="localhost",
                 user="root",
-                password="Kamado_Tanjiro_12",
-                database="mydb",
+                password="123456789",
+                database="baseIglesia",
                 autocommit=True
             )
         except mariadb.Error as e:
             print("Error al conectarse a la bd",e)
         cur = conn.cursor()
-        cur.execute(query)
+        #cur.execute(query)
+        id2=cur.execute(query)
+        print("PRIMERO   "+str(id2))
         return cur
 
 
     def agregarRegistro(self):
         if len(self.nombre.get())!=0 and len(self.contacto.get())!=0 and len(self.tipoSangre.get())!=0:
-            query="INSERT INTO mydb.adolescente (nombre,genero,fechaNacimiento) VALUES ('" + self.nombre.get() + "', '" + self.genero.get() + "','" + str(self.calendario.get_date()) + "');"
+            query="INSERT INTO baseIglesia.adolescente (nombre,genero,fechaNacimiento) VALUES ('" + self.nombre.get() + "', '" + self.genero.get() + "','" + str(self.calendario.get_date()) + "');"
             self.consultaBD(query)
-            query="SELECT last_insert_id()"
+            query="SELECT idAdolescente FROM adolescente where nombre='"+self.nombre.get()+"';"
             print("holaaaaaaaaaaaa")
-            id = str(self.consultaBD(query)["values"][0])
-            print(id)
-            '''query="INSERT INTO mydb.informacionenmergenica (tipoSangre,encargado,Adolescente_idAdolescente) VALUES ('" + self.tipoSangre.get() + "', '" + self.contacto.get() + "','" + id + "');"
+            id = str(self.consultaBD(query))
+            records = self.consultaBD(query).fetchall()
+            print("\nPrinting each row")
+            for row in records:
+                print("Id = ", row[0], )
+                
+            print("SEGUNDO"+id)
+            '''query="INSERT INTO baseIglesia.informacionenmergenica (tipoSangre,encargado,Adolescente_idAdolescente) VALUES ('" + self.tipoSangre.get() + "', '" + self.contacto.get() + "','" + id + "');"
             consultaBD(query)
-            query="SELECT idInformacion FROM mydb.informacionenmergenica WHERE Adolescente_idAdolescente='" + id + "'"
+            query="SELECT idInformacion FROM baseIglesia.informacionenmergenica WHERE Adolescente_idAdolescente='" + id + "'"
             id=consultaBD(query)
             for telefono in self.listaTelefono.get(0,END):
-                query="INSERT INTO mydb.telefono (telefono,informacionEnmergencia_idContacto) VALUES ('" + telefono + "', '" + id + "');"
+                query="INSERT INTO baseIglesia.telefono (telefono,informacionEnmergencia_idContacto) VALUES ('" + telefono + "', '" + id + "');"
                 consultaBD(query)
             for alergia in self.listaAlergia.get(0,END):
-                query="INSERT INTO mydb.alergia (nombre,informacionEnmergencia_idContacto) VALUES ('" + alergia + "', '" + id + "');"
+                query="INSERT INTO baseIglesia.alergia (nombre,informacionEnmergencia_idContacto) VALUES ('" + alergia + "', '" + id + "');"
                 consultaBD(query)'''
             self.nombre.delete(0,END)
             self.nombre.focus()
