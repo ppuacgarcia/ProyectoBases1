@@ -1,4 +1,3 @@
-from calendar import calendar
 from tkinter import *
 from turtle import width
 from PIL import Image, ImageTk
@@ -67,9 +66,9 @@ def ColForm(pw):
     cal=DateEntry(w,width=30)
     cal.place(x=295,y=140)
     Ent(Contacto, 155, 175, 300)
-    Ent(Telefono, 155, 175, 335)
+    Ent(Telefono, 25, 175, 335)
     Ent(TipoSangre, 144, 240, 370)
-    Ent(Alergias, 155, 175, 405)
+    Ent(Alergias, 25, 175, 405)
 
     valrang = ['Ministro','Lider','Teacher']
     comboRan = ttk.Combobox(w, value=valrang, width=152)
@@ -85,7 +84,7 @@ def ColForm(pw):
     
     
     #Funcion para crear botones
-    def btn(f1, x, y, text, bcolor, fcolor, command, font, siz, tipe):
+    def btn(f1, x, y, text, bcolor, fcolor, command, font, siz, tipe,wdt,ht):
         #Botones para menu
         def on_enter(e):
             buttons['background'] = bcolor
@@ -96,23 +95,23 @@ def ColForm(pw):
             buttons['foreground'] = bcolor
             
             
-        buttons = Button(w, width=18, height=2, text= text, fg  = bcolor, bg=fcolor, command=command, border=0, activebackground=bcolor, activeforeground=fcolor,font=(font, siz, tipe))
+        buttons = Button(w, width=wdt, height=ht, text= text, fg  = bcolor, bg=fcolor, command=command, border=0, activebackground=bcolor, activeforeground=fcolor,font=(font, siz, tipe))
         buttons.bind("<Enter>", on_enter)
         buttons.bind("<Leave>", on_leave)
         buttons.place(x=x, y=y)
     
-    btn(w, 980, 600, 'guardar', '#000000', '#FF4e10', Sav,'Arial', 12,'bold',)
-    def chk(txt,x,y):
-        btn=Button(w)
-        check=Checkbutton(w,text=txt)
-        check.config(bg=bglabel,font=(fuenteG,13,'bold'))
-        check.place(x=x,y=y)
-    chk('Colaboradores',posx,500)
-    chk('Adolescentes',posx,525)
-    chk('Formularios Colaboradores',posx,550)
-    chk('Formularios Adolescentes',posx+250,500)
-    chk('Eventos',posx+250,525)
+    btn(w, 980, 600, 'guardar', '#000000', '#FF4e10', Sav,'Arial', 12,'bold',18,2)
+    btn(w,posx+375,335,'guardar telefono','#000000','#FF4e10',Sav,'Arial',12,'bold',13,1)
+    btn(w,posx+375,405,'guardar alergia','#000000','#FF4e10',Sav,'Arial',12,'bold',13,1)
     
+    def tb(w,x,y):
+        tabla=Listbox(w)
+        tabla.place(x=x,y=y)
+
+    tb(w,707,335)
+    tb(w,707,405)
+    
+
     
      
     
