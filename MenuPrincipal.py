@@ -2,7 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 
 from Colabform import ColForm
-from Adolescentes import AdolForm
+from Adolescentes import *
 
 def MenP(pw):
 
