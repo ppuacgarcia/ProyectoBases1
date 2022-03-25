@@ -16,7 +16,7 @@ posx=430
 posy=100
 colorbg="#ABB2B9"
 
-flog = Frame(pw,width=1200,height=675,bg='#707070')
+flog = Frame(pw,width=1200,height=675,bg=colorbg)
 flog.place(x=0, y=0)
 
 

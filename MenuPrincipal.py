@@ -3,6 +3,7 @@ from PIL import Image, ImageTk
 
 from Colabform import ColForm
 from Adolescentes import AdolForm
+from Eventos import EvtForm
 
 def MenP(pw):
 
@@ -16,7 +17,7 @@ def MenP(pw):
         ColForm(pw)
 
     def cmd3():
-        print('Eventos')
+       EvtForm(pw)
         
     def cmd4():
         print('Informacion adolescentes')

@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 from Menu import *
 from tkcalendar import *
 
-def ColForm(pw):
+def EvtForm(pw):
     
 
     w = Frame(pw,width=1200,height=675,bg='#707070')
@@ -33,27 +33,15 @@ def ColForm(pw):
         labe.place(x=x, y=y)
 
 
-    lab('Registro Colaboradores', fuenteG, bglabel, fglabel, 490, 10)
+    lab('Eventos', fuenteG, bglabel, fglabel, 490, 10)
     lab('Datos Generales', fuenteG, bglabel, fglabel, posx, 55)
     lab('Nombre', fuenteP, bglabel, fglabel, posx, 95)
-    lab('Fecha de Nacimiento', fuenteP, bglabel, fglabel, posx, 130)
-    lab('Sexo', fuenteP, bglabel, fglabel, posx, 165)
-    lab('Rango', fuenteP, bglabel, fglabel, posx, 200)
-    lab('Informacion de Enmergencia', fuenteG, bglabel, fglabel, posx, 240)
-    lab('Contacto', fuenteP, bglabel, fglabel, posx, 290)
-    lab('Telefono', fuenteP, bglabel, fglabel, posx, 325)
-    lab('Tipo de Sangre', fuenteP, bglabel, fglabel, posx, 360)
-    lab('Alergias', fuenteP, bglabel, fglabel, posx, 395)
-
-
+    lab('Fecha', fuenteP, bglabel, fglabel, posx, 130)
+    lab('Hora (HH:MM)', fuenteP, bglabel, fglabel, posx, 165)
+    lab('Lugar', fuenteP, bglabel, fglabel, posx, 200)
     name = StringVar()
-    fechanac = StringVar()
-    Sexo = StringVar()
-    Rango = StringVar()
-    Contacto = StringVar()
-    Telefono = int()
-    TipoSangre = StringVar()
-    Alergias = StringVar()
+    Lugar = StringVar()
+    Hora= StringVar()
 
     def Ent(textvar, width, x, y):
         Entr = Entry(w,textvariable=textvar, width=width)
@@ -61,17 +49,13 @@ def ColForm(pw):
         Entr.place(x=x, y=y)
         
 
-    Ent(name, 155, 175, 105)
-    #Ent(fechanac, 135, 295, 140)
+    Ent(name, 156, 175, 105)
+    Ent(Hora, 143, 250, 175)
+    Ent(Lugar, 155, 175, 210)
     cal=DateEntry(w,width=30)
-    cal.place(x=295,y=140)
-    Ent(Sexo, 155, 175, 175)
-    Ent(Rango, 155, 175, 210)
-    Ent(Contacto, 155, 175, 300)
-    Ent(Telefono, 155, 175, 335)
-    Ent(TipoSangre, 144, 240, 370)
-    Ent(Alergias, 155, 175, 405)
-
+    cal.place(x=175,y=140)
+    
+   
 
     def btn(f1, x, y, text, bcolor, fcolor, command, font, siz, tipe):
         #Botones para menu
@@ -90,13 +74,4 @@ def ColForm(pw):
         buttons.place(x=x, y=y)
     
     btn(w, 980, 600, 'guardar', '#000000', '#FF4e10', Sav,'Arial', 12,'bold',)
-    def chk(txt,x,y):
-        btn=Button(w)
-        check=Checkbutton(w,text=txt)
-        check.config(bg=bglabel,font=(fuenteG,13,'bold'))
-        check.place(x=x,y=y)
-    chk('Colaboradores',posx,500)
-    chk('Adolescentes',posx,525)
-    chk('Formularios Colaboradores',posx,550)
-    chk('Formularios Adolescentes',posx+250,500)
-    chk('Eventos',posx+250,525)
+    
