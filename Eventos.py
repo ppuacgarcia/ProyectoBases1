@@ -4,6 +4,7 @@ from turtle import width
 from PIL import Image, ImageTk
 from Menu import *
 from tkcalendar import *
+from tkinter import ttk
 
 def EvtForm(pw):
     
@@ -22,6 +23,12 @@ def EvtForm(pw):
     def cmd():
         w.destroy()
         
+    def edit():
+        None
+        
+    def delete():
+        None
+        
     global img1
     img1 = ImageTk.PhotoImage(Image.open('Images/HM.png')) 
     Button(w, command = cmd, image=img1, border=0,activebackground='#000000', bg='#707070').place(x=5, y = 10)
@@ -34,11 +41,12 @@ def EvtForm(pw):
 
 
     lab('Eventos', fuenteG, bglabel, fglabel, 490, 10)
-    lab('Datos Generales', fuenteG, bglabel, fglabel, posx, 55)
-    lab('Nombre', fuenteP, bglabel, fglabel, posx, 95)
+    lab('Datos Evento', fuenteG, bglabel, fglabel, posx, 55)
+    lab('Nombre.', fuenteP, bglabel, fglabel, posx, 95)
     lab('Fecha', fuenteP, bglabel, fglabel, posx, 130)
     lab('Hora (HH:MM)', fuenteP, bglabel, fglabel, posx, 165)
     lab('Lugar', fuenteP, bglabel, fglabel, posx, 200)
+    lab('Eventos: ', fuenteG, bglabel, fglabel, 100, 300 )
     name = StringVar()
     Lugar = StringVar()
     Hora= StringVar()
@@ -73,5 +81,22 @@ def EvtForm(pw):
         buttons.bind("<Leave>", on_leave)
         buttons.place(x=x, y=y)
     
-    btn(w, 980, 600, 'guardar', '#000000', '#FF4e10', Sav,'Arial', 12,'bold',)
+    btn(w, 980, 275, 'guardar', '#000000', '#FF4e10', Sav,'Arial', 12,'bold')
+    btn(w, 980, 600, 'editar', '#000000', '#FF4e10', edit,'Arial', 12,'bold')
+    btn(w, 750, 600, 'borrar', '#000000', '#FF4e10', delete,'Arial', 12,'bold')
     
+    
+    #Agenda en tabla
+    tabladata = ttk.Treeview(w)
+    tabladata=ttk.Treeview(w,columns=("col1","col2","col3","col4"))
+    tabladata.column("#0", width=80)
+    tabladata.column("col1",width=360, anchor=CENTER)
+    tabladata.column("col2",width=100, anchor=CENTER)
+    tabladata.column("col3",width=100, anchor=CENTER)
+    tabladata.column("col4",width=100, anchor=CENTER)
+    tabladata.heading("#0",text="Id",anchor=CENTER)
+    tabladata.heading("col1",text="Evento",anchor=CENTER)
+    tabladata.heading("col2",text="Fecha",anchor=CENTER)
+    tabladata.heading("col3",text="Hora",anchor=CENTER)
+    tabladata.heading("col4",text="Lugar",anchor=CENTER)
+    tabladata.place(x=230,y=340)
