@@ -31,15 +31,15 @@ class AdolForm:
         self.lab('Alergias', self.fuenteP, self.bglabel, self.fglabel, self.posx, 395)
 
         #Cuadros de texto
-        self.nombre=self.Ent(self.w,155,175,105)
+        self.nombre=self.Ent(self.w,65,175,105)
         #self.genero=self.Ent(self.w,155,175,175)
-        self.contacto=self.Ent(self.w,155, 175, 300)
-        self.telefono=self.Ent(self.w,25, 175, 335)
-        self.tipoSangre=self.Ent(self.w,144, 240, 370)
-        self.alergia=self.Ent(self.w,25, 175, 405)
+        self.contacto=self.Ent(self.w,65, 175, 300)
+        self.telefono=self.Ent(self.w,20, 175, 335)
+        self.tipoSangre=self.Ent(self.w,55, 240, 370)
+        self.alergia=self.Ent(self.w,20, 175, 405)
 
         #ComboBox
-        self.genero=ttk.Combobox(self.w,width=155)
+        self.genero=ttk.Combobox(self.w,width=62)
         self.genero['values']=('Masculino','Femenino')
         self.genero.current(0)
         self.genero["state"]="readonly"
@@ -51,13 +51,29 @@ class AdolForm:
         self.calendario.place(x=295,y=140)
 
         #Botones
-        self.guardarAdolecente=self.btn(self.w, 980, 600, 'Guardar', '#000000', '#FF4e10', self.agregarRegistro,'Arial', 12,'bold',18,2)
-        self.guardarTelefono=self.btn(self.w,self.posx+375,335,'Guardar Telefono','#000000','#FF4e10',self.agregarTelefono,'Arial',12,'bold',13,1)
-        self.guardarAlergia=self.btn(self.w,self.posx+375,405,'Guardar Alergia','#000000','#FF4e10',self.agregarAlergia,'Arial',12,'bold',13,1)
+        self.guardarAdolecente=self.btn(self.w, 375, 600, 'Guardar', '#000000', '#FF4e10', self.agregarRegistro,'Arial', 12,'bold',18,2)
+        self.guardarTelefono=self.btn(self.w,self.posx+230,331,'Guardar Telefono','#000000','#FF4e10',self.agregarTelefono,'Arial',12,'bold',13,1)
+        self.guardarAlergia=self.btn(self.w,self.posx+230,401,'Guardar Alergia','#000000','#FF4e10',self.agregarAlergia,'Arial',12,'bold',13,1)
 
         #Listas
-        self.listaTelefono=self.tb(self.w,707,335)
-        self.listaAlergia=self.tb(self.w,707,405)
+        self.listaTelefono=self.tb(self.w,450,335)
+        self.listaAlergia=self.tb(self.w,450,405)
+        
+        #Tabla
+        self.tabla=ttk.Treeview(self.w,columns=("col1","col2","col3"))
+        self.tabla.column("#0", width=80)
+        self.tabla.column("col1",width=240, anchor=CENTER)
+        self.tabla.column("col2",width=100, anchor=CENTER)
+        self.tabla.column("col3",width=80, anchor=CENTER)
+        self.tabla.heading("#0",text="Id",anchor=CENTER)
+        self.tabla.heading("col1",text="Nombre",anchor=CENTER)
+        self.tabla.heading("col2",text="Genero",anchor=CENTER)
+        self.tabla.heading("col3",text="Edad",anchor=CENTER)
+        self.tabla.place(x=620,y=100)
+        
+        
+   
+    
 
     def Sav(self):
         None
@@ -115,7 +131,7 @@ class AdolForm:
             conn=mariadb.connect(
                 host="localhost",
                 user="root",
-                password="Kamado_Tanjiro_12",
+                password="admin",
                 database="mydb",
                 autocommit=True
             )
