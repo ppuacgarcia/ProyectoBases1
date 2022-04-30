@@ -1,9 +1,11 @@
+from optparse import Values
 from tkinter import *
 from turtle import width
 from PIL import Image, ImageTk
 from Menu import *
 from tkinter import ttk
 from tkcalendar import *
+import mariadb
 
 def ColForm(pw):
     
@@ -62,22 +64,22 @@ def ColForm(pw):
         Entr.place(x=x, y=y)
         
 
-    Ent(name, 155, 175, 105)
+    Ent(name, 65, 175, 105)
     cal=DateEntry(w,width=30)
     cal.place(x=295,y=140)
-    Ent(Contacto, 155, 175, 300)
-    Ent(Telefono, 25, 175, 335)
-    Ent(TipoSangre, 144, 240, 370)
-    Ent(Alergias, 25, 175, 405)
+    Ent(Contacto, 65, 175, 300)
+    Ent(Telefono, 20, 175, 335)
+    Ent(TipoSangre, 54, 240, 370)
+    Ent(Alergias, 20, 175, 405)
 
     valrang = ['Ministro','Lider','Teacher']
-    comboRan = ttk.Combobox(w, value=valrang, width=152)
+    comboRan = ttk.Combobox(w, value=valrang, width=62)
     comboRan.place(x=175, y=210)
     comboRan["state"]="readonly"
     comboRan.current(2)
     
     valS = ['Masculino', 'Femenino']
-    comboS = ttk.Combobox(w, value=valS, width=152)
+    comboS = ttk.Combobox(w, value=valS, width=62)
     comboS.place(x=175, y=175)
     comboS["state"]="readonly"
     comboS.current(0)
@@ -101,19 +103,25 @@ def ColForm(pw):
         buttons.place(x=x, y=y)
     
     btn(w, 980, 600, 'guardar', '#000000', '#FF4e10', Sav,'Arial', 12,'bold',18,2)
-    btn(w,posx+375,335,'guardar telefono','#000000','#FF4e10',Sav,'Arial',12,'bold',13,1)
-    btn(w,posx+375,405,'guardar alergia','#000000','#FF4e10',Sav,'Arial',12,'bold',13,1)
+    btn(w,posx+230,331,'guardar telefono','#000000','#FF4e10',Sav,'Arial',12,'bold',13,1)
+    btn(w,posx+230,401,'guardar alergia','#000000','#FF4e10',Sav,'Arial',12,'bold',13,1)
     
     def tb(w,x,y):
         tabla=Listbox(w)
         tabla.place(x=x,y=y)
-        tabla.config(height=2)
-    tb(w,707,335)
-    tb(w,707,405)
+        tabla.config(height=1)
+    tb(w,450,335)
+    tb(w,450,405)
     
-
-    
-     
-    
-  
-
+    #Tabla
+    tabladata = ttk.Treeview(w)
+    tabladata=ttk.Treeview(w,columns=("col1","col2","col3"))
+    tabladata.column("#0", width=80)
+    tabladata.column("col1",width=240, anchor=CENTER)
+    tabladata.column("col2",width=100, anchor=CENTER)
+    tabladata.column("col3",width=80, anchor=CENTER)
+    tabladata.heading("#0",text="Id",anchor=CENTER)
+    tabladata.heading("col1",text="Nombre",anchor=CENTER)
+    tabladata.heading("col2",text="Genero",anchor=CENTER)
+    tabladata.heading("col3",text="Edad",anchor=CENTER)
+    tabladata.place(x=620,y=100)
