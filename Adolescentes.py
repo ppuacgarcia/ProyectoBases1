@@ -51,18 +51,20 @@ class AdolForm:
         self.calendario.place(x=295,y=140)
 
         #Botones
-        self.guardarAdolecente=self.btn(self.w, 375, 600, 'Guardar', '#000000', '#FF4e10', self.agregarRegistro,'Arial', 12,'bold',18,2)
+        self.guardarAdolecente=self.btn(self.w, 975, 600, 'Guardar', '#000000', '#FF4e10', self.agregarRegistro,'Arial', 12,'bold',18,2)
         self.guardarTelefono=self.btn(self.w,self.posx+230,331,'Guardar Telefono','#000000','#FF4e10',self.agregarTelefono,'Arial',12,'bold',13,1)
         self.guardarAlergia=self.btn(self.w,self.posx+230,401,'Guardar Alergia','#000000','#FF4e10',self.agregarAlergia,'Arial',12,'bold',13,1)
+        self.borrar=self.btn(self.w, 575, 600, 'Borrar', '#000000', '#FF4e10', self.borrarRegistro,'Arial', 12,'bold',18,2)
+        self.editar=self.btn(self.w, 775, 600, 'Editar', '#000000', '#FF4e10', self.editarRegistro,'Arial', 12,'bold',18,2)
 
         #Listas
         self.listaTelefono=self.tb(self.w,450,335)
         self.listaAlergia=self.tb(self.w,450,405)
         
         #Tabla
-        self.tabla=ttk.Treeview(self.w,columns=("col1","col2","col3"))
+        self.tabla=ttk.Treeview(self.w,columns=("col1","col2","col3"),height=21)
         self.tabla.column("#0", width=40)
-        self.tabla.column("col1",width=150, anchor=CENTER)
+        self.tabla.column("col1",width=225, anchor=CENTER)
         self.tabla.column("col2",width=100, anchor=CENTER)
         self.tabla.column("col3",width=150, anchor=CENTER)
         self.tabla.heading("#0",text="Id",anchor=CENTER)
@@ -133,7 +135,7 @@ class AdolForm:
             conn=mariadb.connect(
                 host="localhost",
                 user="root",
-                password="Kamado_Tanjiro_12",
+                password="admin",
                 database="iglesia",
                 autocommit=True
             )
@@ -189,3 +191,10 @@ class AdolForm:
             cur=self.consultaBD("SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente")
         for (id,nombre,genero,fechanacimiento) in cur:
             self.tabla.insert('',0,text=id,values=[nombre,genero,fechanacimiento])
+            
+    def borrarRegistro(self, where = ""):
+        None
+        
+    def editarRegistro(self, where = ""):
+        None
+    
