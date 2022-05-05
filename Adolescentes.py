@@ -61,14 +61,14 @@ class AdolForm:
         
         #Tabla
         self.tabla=ttk.Treeview(self.w,columns=("col1","col2","col3"))
-        self.tabla.column("#0", width=80)
-        self.tabla.column("col1",width=240, anchor=CENTER)
+        self.tabla.column("#0", width=40)
+        self.tabla.column("col1",width=150, anchor=CENTER)
         self.tabla.column("col2",width=100, anchor=CENTER)
-        self.tabla.column("col3",width=80, anchor=CENTER)
+        self.tabla.column("col3",width=150, anchor=CENTER)
         self.tabla.heading("#0",text="Id",anchor=CENTER)
         self.tabla.heading("col1",text="Nombre",anchor=CENTER)
         self.tabla.heading("col2",text="Genero",anchor=CENTER)
-        self.tabla.heading("col3",text="Edad",anchor=CENTER)
+        self.tabla.heading("col3",text="Fecha Nacimiento",anchor=CENTER)
         self.tabla.place(x=620,y=100)
         
         
@@ -125,14 +125,16 @@ class AdolForm:
         if len(self.alergia.get())!=0:
             self.listaAlergia.insert(END,self.alergia.get())
 
+    #Llenar cuadros de texto
+
     #Metodos para ingresar a la base de datos
     def consultaBD(self,query):
         try:
             conn=mariadb.connect(
                 host="localhost",
                 user="root",
-                password="admin",
-                database="mydb",
+                password="Kamado_Tanjiro_12",
+                database="iglesia",
                 autocommit=True
             )
         except mariadb.Error as e:
@@ -153,18 +155,37 @@ class AdolForm:
 
     def agregarRegistro(self):
         if len(self.nombre.get())!=0 and len(self.contacto.get())!=0 and len(self.tipoSangre.get())!=0:
-            query="INSERT INTO mydb.adolescente (nombre,genero,fechaNacimiento) VALUES ('" + self.nombre.get() + "', '" + self.genero.get() + "','" + str(self.calendario.get_date()) + "');"
+            query="call InsertarAdolescente('" + self.nombre.get() + "', '" + self.genero.get() + "','" + str(self.calendario.get_date()) + "');"
             self.consultaBD(query)
-            query="SELECT idAdolescente FROM adolescente where nombre='"+self.nombre.get()+"';"
-            id=self.obtenerID(query)
-            query="INSERT INTO mydb.informacionenmergenica (tipoSangre,encargado,Adolescente_idAdolescente) VALUES ('" + self.tipoSangre.get() + "', '" + self.contacto.get() + "','" + id + "');"
+            query="call InsertarIEA('" + self.nombre.get() + "', '" + self.tipoSangre.get() + "', '" + self.contacto.get() + "');"
             self.consultaBD(query)
-            query="SELECT idInformacion FROM mydb.informacionenmergenica WHERE Adolescente_idAdolescente='" + id + "'"
-            id=self.obtenerID(query)
             for telefono in self.listaTelefono.get(0,END):
-                query="INSERT INTO mydb.telefono (telefono,contactoEnmergenica_idContacto) VALUES ('" + telefono + "', '" + id + "');"
+                query="call InsertarTA('" + self.nombre.get() + "', '" + telefono + "');"
                 self.consultaBD(query)
             for alergia in self.listaAlergia.get(0,END):
-                query="INSERT INTO mydb.alergia (nombre,informacionEnmergenica_idContacto) VALUES ('" + alergia + "', '" + id + "');"
+                query="call InsertarAA('" + self.nombre.get() + "', '" + alergia + "');"
                 self.consultaBD(query)
+        self.nombre.focus()
+        self.mostrarDatos()
+
+    def editarRegistro(self):
+        if len(self.nombre.get())!=0 and len(self.clave.get())!=0:
+            query="UPDATE escuela.alumnos SET nombre='" + self.nombre.get() + "', genero='" + self.genero.get() + "', fechanacimiento='" + str(self.calendario.get_date()) + "' where id='" + self.idViejo + "';"
+            self.consultaBD(query)
+            self.nombre.delete(0,END)
+            self.genero.current(0)
+            self.calendario.set_date()
             self.nombre.focus()
+        self.mostrarDatos()
+        self.guardarAdolecente["state"]="normal"
+
+    def mostrarDatos(self,where=""):
+        registro=self.tabla.get_children()
+        for registro in registro:
+            self.tabla.delete(registro)
+        if len(where)>0:
+            cur=self.consultaBD("SELECT id, Nombre, Genero, FechaNacimiento FROM iglesia.adolescente " + where)
+        else:
+            cur=self.consultaBD("SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente")
+        for (id,nombre,genero,fechanacimiento) in cur:
+            self.tabla.insert('',0,text=id,values=[nombre,genero,fechanacimiento])

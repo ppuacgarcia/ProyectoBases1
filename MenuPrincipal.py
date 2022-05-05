@@ -14,7 +14,7 @@ def MenP(pw):
     fMenuP.place(x=0, y=0)
 
     def cmd1():
-        AdolForm(pw)
+        AdolForm(pw).mostrarDatos()
         
     def cmd2():
         ColForm(pw)
