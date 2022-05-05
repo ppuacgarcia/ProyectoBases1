@@ -129,6 +129,13 @@ class AdolForm:
 
     #Llenar cuadros de texto
 
+    #Convertir cadenas a mayuscula
+    def mayusnomNombre(nombreB):
+        for i in range ( len (nombreB) ):
+            if(ord(nombreB[i])>96 and ord(nombreB[i])<122):
+                nombreB[i]=chr(ord(nombreB[i])-32)
+
+
     #Metodos para ingresar a la base de datos
     def consultaBD(self,query):
         try:
