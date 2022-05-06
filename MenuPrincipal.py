@@ -1,6 +1,7 @@
 from tkinter import *
 from PIL import Image, ImageTk
 
+from InfoColaboradores import colabinfo
 from Colabform import ColForm
 from InfoAdol import adolinfo
 from Adolescentes import *
@@ -26,7 +27,7 @@ def MenP(pw):
         adolinfo(pw)
         
     def cmd5():
-        print('Infomracion colaboradores')
+        colabinfo(pw)
         
     def btnmenu(pw, x, y, text, bcolor, fcolor, command, font, siz, tipe):
         #Botones para menu
