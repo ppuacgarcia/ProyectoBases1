@@ -26,6 +26,7 @@ class AdolForm:
         self.lab('Nombre', self.fuenteP, self.bglabel, self.fglabel, self.posx, 95)
         self.lab('Fecha de Nacimiento', self.fuenteP, self.bglabel, self.fglabel, self.posx, 130)
         self.lab('Genero', self.fuenteP, self.bglabel, self.fglabel, self.posx, 165)
+        self.lab('Telefono', self.fuenteP, self.bglabel, self.fglabel, self.posx, 200)
         self.lab('Informacion de Enmergencia', self.fuenteG, self.bglabel, self.fglabel, self.posx, 240)
         self.lab('Contacto', self.fuenteP, self.bglabel, self.fglabel, self.posx, 290)
         self.lab('Telefono', self.fuenteP, self.bglabel, self.fglabel, self.posx, 325)
@@ -39,6 +40,7 @@ class AdolForm:
         self.telefono=self.Ent(self.w,20, 175, 335)
         self.tipoSangre=self.Ent(self.w,55, 240, 370)
         self.alergia=self.Ent(self.w,20, 175, 405)
+        self.telefonoadol=self.Ent(self.w,20, 175, 210)
 
         #ComboBox
         self.genero=ttk.Combobox(self.w,width=62)
@@ -58,10 +60,12 @@ class AdolForm:
         self.guardarAlergia=self.btn(self.w,self.posx+230,401,'Guardar Alergia','#000000','#FF4e10',self.agregarAlergia,'Arial',12,'bold',13,1)
         self.borrar=self.btn(self.w, 575, 600, 'Borrar', '#000000', '#FF4e10', self.borrarRegistro,'Arial', 12,'bold',18,2)
         self.editar=self.btn(self.w, 775, 600, 'Editar', '#000000', '#FF4e10', self.editarRegistro,'Arial', 12,'bold',18,2)
-
+        self.guardarTelefonoAdo=self.btn(self.w,self.posx+230,200,'Guardar Telefono','#000000','#FF4e10',self.agregarTelefono,'Arial',12,'bold',13,1)
+        
         #Listas
         self.listaTelefono=self.tb(self.w,450,335)
         self.listaAlergia=self.tb(self.w,450,405)
+        self.listaTelefonoAdol=self.tb(self.w,450,210)
         
         #Tabla
         self.tabla=ttk.Treeview(self.w,columns=("col1","col2","col3"),height=21)
