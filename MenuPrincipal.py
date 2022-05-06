@@ -2,7 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 
 from Colabform import ColForm
-
+from InfoAdol import adolinfo
 from Adolescentes import *
 from Eventos import EvtForm
 
@@ -20,10 +20,10 @@ def MenP(pw):
         ColForm(pw)
 
     def cmd3():
-       EvtForm(pw)
+        EvtForm(pw)
         
     def cmd4():
-        print('Informacion adolescentes')
+        adolinfo(pw)
         
     def cmd5():
         print('Infomracion colaboradores')

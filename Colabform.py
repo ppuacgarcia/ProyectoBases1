@@ -22,6 +22,12 @@ def ColForm(pw):
     def cmd():
         w.destroy()
         
+    def borrarRegistro():
+        None
+    
+    def editarRegistro():
+        None    
+    
     global img1
     img1 = ImageTk.PhotoImage(Image.open('Images/HM.png')) 
     Button(w, command = cmd, image=img1, border=0,activebackground='#000000', bg='#707070').place(x=5, y = 10)
@@ -144,9 +150,12 @@ def ColForm(pw):
         buttons.bind("<Leave>", on_leave)
         buttons.place(x=x, y=y)
     
-    btn(w, 980, 600, 'guardar', '#000000', '#FF4e10', agregarRegistro,'Arial', 12,'bold',18,2)
+    btn(w, 975, 600, 'guardar', '#000000', '#FF4e10', agregarRegistro,'Arial', 12,'bold',18,2)
     btn(w,posx+230,331,'guardar telefono','#000000','#FF4e10',agregarTelefono,'Arial',12,'bold',13,1)
     btn(w,posx+230,401,'guardar alergia','#000000','#FF4e10',agregarAlergia,'Arial',12,'bold',13,1)
+    btn(w, 575, 600, 'Borrar', '#000000', '#FF4e10', borrarRegistro,'Arial', 12,'bold',18,2)
+    btn(w, 775, 600, 'Editar', '#000000', '#FF4e10', editarRegistro,'Arial', 12,'bold',18,2)
+
     
     def tb(w,x,y):
         tabla=Listbox(w)
@@ -158,7 +167,7 @@ def ColForm(pw):
     
     #Tabla
     tabladata = ttk.Treeview(w)
-    tabladata=ttk.Treeview(w,columns=("col1","col2","col3"))
+    tabladata=ttk.Treeview(w,columns=("col1","col2","col3"), height=21)
     tabladata.column("#0", width=80)
     tabladata.column("col1",width=240, anchor=CENTER)
     tabladata.column("col2",width=100, anchor=CENTER)
@@ -168,4 +177,6 @@ def ColForm(pw):
     tabladata.heading("col2",text="Genero",anchor=CENTER)
     tabladata.heading("col3",text="Edad",anchor=CENTER)
     tabladata.place(x=620,y=100)
+
     mostrarDatos()
+

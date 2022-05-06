@@ -29,6 +29,9 @@ def EvtForm(pw):
     def delete():
         None
         
+    def Asistencia():
+        None
+        
     global img1
     img1 = ImageTk.PhotoImage(Image.open('Images/HM.png')) 
     Button(w, command = cmd, image=img1, border=0,activebackground='#000000', bg='#707070').place(x=5, y = 10)
@@ -84,6 +87,7 @@ def EvtForm(pw):
     btn(w, 980, 275, 'guardar', '#000000', '#FF4e10', Sav,'Arial', 12,'bold')
     btn(w, 980, 600, 'editar', '#000000', '#FF4e10', edit,'Arial', 12,'bold')
     btn(w, 750, 600, 'borrar', '#000000', '#FF4e10', delete,'Arial', 12,'bold')
+    btn(w, 100, 600, 'Asistencia', '#000000', '#FF4e10', Asistencia,'Arial', 12,'bold')
     
     
     #Agenda en tabla
