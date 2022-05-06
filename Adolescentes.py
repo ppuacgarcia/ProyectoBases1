@@ -142,7 +142,7 @@ class AdolForm:
             conn=mariadb.connect(
                 host="localhost",
                 user="root",
-                password="admin",
+                password="123456789",
                 database="iglesia",
                 autocommit=True
             )

@@ -18,8 +18,6 @@ def ColForm(pw):
     fglabel = '#FFFFFF'
     posx = 80
 
-    def Sav():
-        None
         
     def cmd():
         w.destroy()
@@ -33,7 +31,7 @@ def ColForm(pw):
         labe = Label(w,text=text, font=font, bg=bg, foreground=fg)
         labe.pack()
         labe.place(x=x, y=y)
-
+    
 
     lab('Registro Colaboradores', fuenteG, bglabel, fglabel, 490, 10)
     lab('Datos Generales', fuenteG, bglabel, fglabel, posx, 55)
@@ -62,16 +60,35 @@ def ColForm(pw):
         Entr = Entry(w,textvariable=textvar, width=width)
         Entr.pack()
         Entr.place(x=x, y=y)
-        
-
-    Ent(name, 65, 175, 105)
+        return Entr
+    def consultaBD(query):
+        try:
+            conn=mariadb.connect(
+                host="localhost",
+                user="root",
+                password="123456789",
+                database="iglesia",
+                autocommit=True
+            )
+        except mariadb.Error as e:
+            print("Error al conectarse a la bd",e)
+        cur = conn.cursor()
+        id2=cur.execute(query)
+        print("PRIMERO   "+str(id2))
+        return cur
+    nombre=Ent(name, 65, 175, 105)
     cal=DateEntry(w,width=30)
     cal.place(x=295,y=140)
-    Ent(Contacto, 65, 175, 300)
-    Ent(Telefono, 20, 175, 335)
-    Ent(TipoSangre, 54, 240, 370)
-    Ent(Alergias, 20, 175, 405)
-
+    contacto=Ent(Contacto, 65, 175, 300)
+    Telefono1=Ent(Telefono, 20, 175, 335)
+    tipoSangre=Ent(TipoSangre, 54, 240, 370)
+    alergia=Ent(Alergias, 20, 175, 405)
+    def agregarTelefono():
+        if len(Telefono1.get())!=0:
+            listaTelefono.insert(END,Telefono1.get())
+    def agregarAlergia():
+        if len(alergia.get())!=0:
+            listaAlergia.insert(END,alergia.get())
     valrang = ['Ministro','Lider','Teacher']
     comboRan = ttk.Combobox(w, value=valrang, width=62)
     comboRan.place(x=175, y=210)
@@ -84,6 +101,31 @@ def ColForm(pw):
     comboS["state"]="readonly"
     comboS.current(0)
     
+    def mostrarDatos(where=""):
+        registro=tabladata.get_children()
+        for registro in registro:
+            tabladata.delete(registro)
+        if len(where)>0:
+            cur=consultaBD("SELECT id,FechaNacimiento , Nombre, Genero FROM iglesia.colaborador " + where)
+        else:
+            cur=consultaBD(" SELECT id,FechaNacimiento , Nombre, Genero FROM iglesia.colaborador ;")
+        for (id,fechanacimiento,nombre,genero) in cur:
+            tabladata.insert('',0,text=id,values=[nombre,genero,fechanacimiento])
+            
+    def agregarRegistro():
+        if len(nombre.get())!=0 and len(contacto.get())!=0 and len(tipoSangre.get())!=0:
+            query="call InsertarColab('" + nombre.get() + "', '" + comboS.get() + "','" + str(cal.get_date()) + "','"+comboRan.get()+"');"
+            consultaBD(query)
+            query="call InsertarIEA('" + nombre.get() + "', '" + tipoSangre.get() + "', '" + contacto.get() + "');"
+            consultaBD(query)
+            for telefono in listaTelefono.get(0,END):
+                query="call InsertarTA('" + nombre.get() + "', '" + telefono + "');"
+                consultaBD(query)
+            for alergia in listaAlergia.get(0,END):
+                query="call InsertarAA('" +nombre.get() + "', '" + alergia + "');"
+                consultaBD(query)
+        nombre.focus()
+        mostrarDatos()
     
     #Funcion para crear botones
     def btn(f1, x, y, text, bcolor, fcolor, command, font, siz, tipe,wdt,ht):
@@ -102,16 +144,17 @@ def ColForm(pw):
         buttons.bind("<Leave>", on_leave)
         buttons.place(x=x, y=y)
     
-    btn(w, 980, 600, 'guardar', '#000000', '#FF4e10', Sav,'Arial', 12,'bold',18,2)
-    btn(w,posx+230,331,'guardar telefono','#000000','#FF4e10',Sav,'Arial',12,'bold',13,1)
-    btn(w,posx+230,401,'guardar alergia','#000000','#FF4e10',Sav,'Arial',12,'bold',13,1)
+    btn(w, 980, 600, 'guardar', '#000000', '#FF4e10', agregarRegistro,'Arial', 12,'bold',18,2)
+    btn(w,posx+230,331,'guardar telefono','#000000','#FF4e10',agregarTelefono,'Arial',12,'bold',13,1)
+    btn(w,posx+230,401,'guardar alergia','#000000','#FF4e10',agregarAlergia,'Arial',12,'bold',13,1)
     
     def tb(w,x,y):
         tabla=Listbox(w)
         tabla.place(x=x,y=y)
         tabla.config(height=1)
-    tb(w,450,335)
-    tb(w,450,405)
+        return tabla
+    listaTelefono=tb(w,450,335)
+    listaAlergia=tb(w,450,405)
     
     #Tabla
     tabladata = ttk.Treeview(w)
@@ -125,3 +168,4 @@ def ColForm(pw):
     tabladata.heading("col2",text="Genero",anchor=CENTER)
     tabladata.heading("col3",text="Edad",anchor=CENTER)
     tabladata.place(x=620,y=100)
+    mostrarDatos()
