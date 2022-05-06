@@ -5,6 +5,7 @@ from PIL import Image, ImageTk
 from Menu import *
 from tkcalendar import *
 from tkinter import ttk
+import mariadb
 from Asistencia import AsisForm
 
 class EvtForm:
@@ -38,7 +39,7 @@ class EvtForm:
         self.cal=DateEntry(self.w,width=30)
         self.cal.place(x=175,y=140)
 
-        self.guardar = self.btn(self.w, 980, 275, 'guardar', '#000000', '#FF4e10', self.Sav,'Arial', 12,'bold')
+        self.guardar = self.btn(self.w, 980, 275, 'guardar', '#000000', '#FF4e10', self.agregarRegistro,'Arial', 12,'bold')
         self.editar = self.btn(self.w, 980, 600, 'editar', '#000000', '#FF4e10', self.edit,'Arial', 12,'bold')
         self.borrar = self.btn(self.w, 750, 600, 'borrar', '#000000', '#FF4e10', self.delete,'Arial', 12,'bold')
         self.asistencia = self.btn(self.w, 100, 600, 'Asistencia', '#000000', '#FF4e10', self.Asistencia,'Arial', 12,'bold')
@@ -87,6 +88,7 @@ class EvtForm:
         Entr = Entry(self.w,textvariable=textvar, width=width)
         Entr.pack()
         Entr.place(x=x, y=y)
+        return Entr
         
 
     
@@ -108,8 +110,51 @@ class EvtForm:
         buttons.bind("<Enter>", on_enter)
         buttons.bind("<Leave>", on_leave)
         buttons.place(x=x, y=y)
+        return buttons
     
-    
-    
-    
-    
+    def mayus(self,nombreB):
+        result=""
+        for i in range ( len (nombreB) ):
+            if(ord(nombreB[i])>96 and ord(nombreB[i])<122):
+               result+=chr(ord(nombreB[i])-32)
+            else:
+                result+=nombreB[i]
+        return result
+
+    def consultaBD(self,query):
+        try:
+            conn=mariadb.connect(
+                host="localhost",
+                user="root",
+                #password="123456789",
+                password="Kamado_Tanjiro_12",
+                database="iglesia",
+                autocommit=True
+            )
+        except mariadb.Error as e:
+            print("Error al conectarse a la bd",e)
+        cur = conn.cursor()
+        id2=cur.execute(query)
+        print("PRIMERO   "+str(id2))
+        return cur
+
+    def mostrarDatos(self,where=""):
+        registro=self.tabladata.get_children()
+        for registro in registro:
+            self.tabladata.delete(registro)
+        if len(where)>0:
+            cur=self.consultaBD("SELECT id, nombre, fecha, hora, lugar FROM iglesia.evento " + where)
+        else:
+            cur=self.consultaBD("SELECT id, nombre, fecha, hora, lugar FROM iglesia.evento;")
+        for (id,nombre,fecha,hora,lugar) in cur:
+            self.tabladata.insert('',0,text=id,values=[nombre,fecha,hora,lugar])
+
+    def agregarRegistro(self):
+        if len(self.nombre.get())!=0 and len(self.hora.get())!=0 and len(self.lugar.get())!=0 and len(str(self.cal.get_date()))!=0:
+            query="call InsertarEvento('" + self.mayus(self.nombre.get()) + "', '" + str(self.cal.get_date()) + "','" + self.hora.get() + "','" + self.lugar.get() + "');"
+            self.consultaBD(query)
+        self.nombre.delete(0,END)
+        self.hora.delete(0,END)
+        self.lugar.delete(0,END)
+        self.nombre.focus()
+        self.mostrarDatos()
