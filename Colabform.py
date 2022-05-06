@@ -122,7 +122,7 @@ def ColForm(pw):
         if len(nombre.get())!=0 and len(contacto.get())!=0 and len(tipoSangre.get())!=0:
             query="call InsertarColab('" + nombre.get() + "', '" + comboS.get() + "','" + str(cal.get_date()) + "','"+comboRan.get()+"');"
             consultaBD(query)
-            query="call InsertarIEA('" + nombre.get() + "', '" + tipoSangre.get() + "', '" + contacto.get() + "');"
+            query="call InsertarIEC('" + nombre.get() + "', '" + tipoSangre.get() + "', '" + contacto.get() + "');"
             consultaBD(query)
             for telefono in listaTelefono.get(0,END):
                 query="call InsertarTA('" + nombre.get() + "', '" + telefono + "');"
