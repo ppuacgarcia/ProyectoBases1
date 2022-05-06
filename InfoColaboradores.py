@@ -120,7 +120,7 @@ def colabinfo(pw):
     tabladata.heading("#0",text="Id",anchor=CENTER)
     tabladata.heading("col1",text="Nombre",anchor=CENTER)
     tabladata.heading("col2",text="Genero",anchor=CENTER)
-    tabladata.heading("col3",text="Edad",anchor=CENTER)
+    tabladata.heading("col3",text="Fecha Nacimiento",anchor=CENTER)
     tabladata.heading("col4",text="Tipo Sangre",anchor=CENTER)
     tabladata.heading("col5",text="Contacto Enmerg",anchor=CENTER)
     tabladata.place(x=80,y=120)
@@ -142,3 +142,7 @@ def colabinfo(pw):
     tablaAl.heading("#0",text="Id",anchor=CENTER)
     tablaAl.heading("col1",text="Alergia",anchor=CENTER)
     tablaAl.place(x=385,y=520)
+
+
+
+
