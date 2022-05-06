@@ -27,7 +27,7 @@ def MenP(pw):
         adolinfo(pw).mostrarDatos()
         
     def cmd5():
-        colabinfo(pw)
+        colabinfo(pw).mostrarDatos()
         
     def btnmenu(pw, x, y, text, bcolor, fcolor, command, font, siz, tipe):
         #Botones para menu
