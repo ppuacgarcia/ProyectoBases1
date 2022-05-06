@@ -40,8 +40,8 @@ class EvtForm:
         self.cal.place(x=175,y=140)
 
         self.guardar = self.btn(self.w, 980, 275, 'guardar', '#000000', '#FF4e10', self.agregarRegistro,'Arial', 12,'bold')
-        self.editar = self.btn(self.w, 980, 600, 'editar', '#000000', '#FF4e10', self.edit,'Arial', 12,'bold')
-        self.borrar = self.btn(self.w, 750, 600, 'borrar', '#000000', '#FF4e10', self.delete,'Arial', 12,'bold')
+        self.editar = self.btn(self.w, 980, 600, 'editar', '#000000', '#FF4e10', self.editarRegistro,'Arial', 12,'bold')
+        self.borrar = self.btn(self.w, 750, 600, 'borrar', '#000000', '#FF4e10', self.borrarRegistro,'Arial', 12,'bold')
         self.asistencia = self.btn(self.w, 100, 600, 'Asistencia', '#000000', '#FF4e10', self.Asistencia,'Arial', 12,'bold')
 
         #Agenda en tabla
@@ -58,18 +58,10 @@ class EvtForm:
         self.tabladata.heading("col3",text="Hora",anchor=CENTER)
         self.tabladata.heading("col4",text="Lugar",anchor=CENTER)
         self.tabladata.place(x=230,y=340)
+        self.tabladata.bind("<Double-Button-1>",self.doubleClickTabla)
 
-    def Sav(self):
-        None
-        
     def cmd(self):
         self.w.destroy()
-        
-    def edit(self):
-        None
-        
-    def delete(self):
-        None
         
     def Asistencia(self):
         AsisForm(self.principal, 1)
@@ -151,10 +143,62 @@ class EvtForm:
 
     def agregarRegistro(self):
         if len(self.nombre.get())!=0 and len(self.hora.get())!=0 and len(self.lugar.get())!=0 and len(str(self.cal.get_date()))!=0:
-            query="call InsertarEvento('" + self.mayus(self.nombre.get()) + "', '" + str(self.cal.get_date()) + "','" + self.hora.get() + "','" + self.lugar.get() + "');"
+            query="call InsertarEvento('" + self.mayus(self.nombre.get()) + "', '" + str(self.cal.get_date()) + "','" + self.hora.get() + "','" + self.mayus(self.lugar.get()) + "');"
             self.consultaBD(query)
         self.nombre.delete(0,END)
         self.hora.delete(0,END)
         self.lugar.delete(0,END)
         self.nombre.focus()
         self.mostrarDatos()
+        self.guardar["state"]="normal"
+        self.asistencia["state"]="disable"
+        self.editar["state"]="disable"
+        self.borrar["state"]="disable"
+
+    def doubleClickTabla(self,event):
+        self.idViejo=str(self.tabladata.item(self.tabladata.selection())["text"])
+        self.nombre.delete(0,END)
+        self.hora.delete(0,END)
+        self.lugar.delete(0,END)
+        self.nombre.focus()
+        self.mostrarDatos()
+        self.guardar["state"]="disable"
+        self.asistencia["state"]="normal"
+        self.editar["state"]="normal"
+        self.borrar["state"]="normal"
+        
+        cur=self.consultaBD("SELECT nombre, fecha, hora, lugar FROM iglesia.evento WHERE evento.id = '" + self.idViejo + "';")
+        for (nombre,fecha,hora,lugar) in cur:
+            self.nombre.insert(0,nombre)
+            self.cal.set_date(fecha)
+            self.hora.insert(0,hora)
+            self.lugar.insert(0,lugar)
+
+    def borrarRegistro(self, where = ""):
+        if len(self.nombre.get())!=0 and len(self.hora.get())!=0 and len(self.lugar.get())!=0 and len(str(self.cal.get_date()))!=0:
+            query="call BorrarEvento('" + self.mayus(self.nombre.get()) + "');"
+            self.consultaBD(query)
+            self.nombre.delete(0,END)
+            self.hora.delete(0,END)
+            self.lugar.delete(0,END)
+            self.nombre.focus()
+            self.mostrarDatos()
+        self.guardar["state"]="normal"
+        self.asistencia["state"]="disable"
+        self.editar["state"]="disable"
+        self.borrar["state"]="disable"
+
+    def editarRegistro(self, where = ""):
+        if len(self.nombre.get())!=0 and len(self.hora.get())!=0 and len(self.lugar.get())!=0 and len(str(self.cal.get_date()))!=0:
+            query="UPDATE iglesia.evento SET nombre='" + self.mayus(self.nombre.get()) + "', fecha='" + str(self.cal.get_date()) + "', hora='" + self.hora.get() + "', lugar='" + self.mayus(self.lugar.get()) + "' where id='" + self.idViejo + "';"
+            self.consultaBD(query)
+            self.consultaBD(query)
+            self.nombre.delete(0,END)
+            self.hora.delete(0,END)
+            self.lugar.delete(0,END)
+            self.nombre.focus()
+            self.mostrarDatos()
+        self.guardar["state"]="normal"
+        self.asistencia["state"]="disable"
+        self.editar["state"]="disable"
+        self.borrar["state"]="disable"
