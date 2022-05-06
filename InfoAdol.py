@@ -43,14 +43,14 @@ class adolinfo:
         self.tipoSangre = self.Ent(self.TSangre, 57, 800, 380)
         self.contacto = self.Ent(self.CEnmerg, 57, 800, 440)
 
-        valS = ['Masculino', 'Femenino']
+        valS = ['MASCULINO', 'FEMENINO']
         self.comboS = ttk.Combobox(self.w, value=valS, width=25)
         self.comboS.place(x=805, y=72)
         self.comboS["state"]="readonly"
         self.comboS.current(0)
 
         self.buscarNombre = self.btn(self.w, 570, 72, 'Nombre', '#000000', '#FF4e10', self.NomSearch,'Arial', 12,'bold',10,1)
-        self.buscarFecha = self.btn(self.w, 680, 72, 'Fecha', '#000000', '#FF4e10', self.FechaSearch,'Arial', 12,'bold',10,1)
+        self.buscarFecha = self.btn(self.w, 680, 72, 'Edad', '#000000', '#FF4e10', self.FechaSearch,'Arial', 12,'bold',10,1)
         self.buscarGenero = self.btn(self.w, 1010, 72, 'Genero', '#000000', '#FF4e10', self.GenSearch,'Arial', 12,'bold',10,1)
 
         #Tabla
@@ -65,7 +65,7 @@ class adolinfo:
         self.tabladata.heading("#0",text="Id",anchor=CENTER)
         self.tabladata.heading("col1",text="Nombre",anchor=CENTER)
         self.tabladata.heading("col2",text="Genero",anchor=CENTER)
-        self.tabladata.heading("col3",text="Edad",anchor=CENTER)
+        self.tabladata.heading("col3",text="Fecha Nacimiento",anchor=CENTER)
         self.tabladata.heading("col4",text="Tipo Sangre",anchor=CENTER)
         self.tabladata.heading("col5",text="Contacto Enmerg",anchor=CENTER)
         self.tabladata.place(x=80,y=120)
@@ -101,14 +101,9 @@ class adolinfo:
     def editarRegistro():
         None   
         
-    def NomSearch():
-        None 
+    
         
-    def FechaSearch():
-        None
-        
-    def GenSearch():
-        None
+    
 
     #Labels formulario
     def lab(self,text, font, bg, fg, x, y):
@@ -181,7 +176,7 @@ class adolinfo:
             self.tablatel.delete(i)
         for i in self.tablaAl.get_children():
             self.tablaAl.delete(i)
-        self.mostrarDatos()
+        #self.mostrarDatos()
         
         cur=self.consultaBD("SELECT adolescente.nombre, adolescente.genero, adolescente.fechanacimiento, infoemergencia.tiposangre, infoemergencia.encargado FROM iglesia.adolescente JOIN iglesia.infoemergencia ON adolescente.id = infoemergencia.adolescente_id WHERE adolescente.id = '" + self.idViejo + "';")
         for (nombre,genero,fechanacimiento,tiposangre,encargado) in cur:
@@ -198,3 +193,25 @@ class adolinfo:
         cur=self.consultaBD("SELECT alergia.id, alergia.detalle FROM iglesia.alergia JOIN iglesia.infoemergencia ON alergia.infoemergencia_id = infoemergencia.id JOIN iglesia.adolescente ON infoemergencia.adolescente_id = adolescente.id WHERE adolescente.id = '" + self.idViejo + "';")
         for (id, detalle) in cur:
             self.tablaAl.insert('',0,text=id,values=detalle)
+        self.buscar.delete(0,END)
+
+    def NomSearch(self):
+        where=" where 1=1 "
+        if len(self.buscar.get())>0:
+            where = where + "and adolescente.nombre='" + self.buscar.get() + "' "
+        self.mostrarDatos(where)
+        
+
+    def GenSearch(self):
+        where=" where 1=1 "
+        if len(self.comboS.get())>0:
+            where = where + "and adolescente.genero='" + self.comboS.get() + "' "
+        self.mostrarDatos(where)
+        
+
+    def FechaSearch(self):
+        where=" where 1=1 "
+        if len(self.buscar.get())>0:
+            where = where + "and (YEAR(NOW()) - YEAR(adolescente.fechanacimiento)) = '" + self.buscar.get() + "' "
+        self.mostrarDatos(where)
+        
