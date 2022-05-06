@@ -24,7 +24,7 @@ def MenP(pw):
         EvtForm(pw)
         
     def cmd4():
-        adolinfo(pw)
+        adolinfo(pw).mostrarDatos()
         
     def cmd5():
         colabinfo(pw)
