@@ -125,10 +125,10 @@ def ColForm(pw):
             query="call InsertarIEC('" + nombre.get() + "', '" + tipoSangre.get() + "', '" + contacto.get() + "');"
             consultaBD(query)
             for telefono in listaTelefono.get(0,END):
-                query="call InsertarTA('" + nombre.get() + "', '" + telefono + "');"
+                query="call InsertarTIEC('" + nombre.get() + "', '" + telefono + "');"
                 consultaBD(query)
             for alergia in listaAlergia.get(0,END):
-                query="call InsertarAA('" +nombre.get() + "', '" + alergia + "');"
+                query="call InsertarAC('" +nombre.get() + "', '" + alergia + "');"
                 consultaBD(query)
         nombre.focus()
         mostrarDatos()

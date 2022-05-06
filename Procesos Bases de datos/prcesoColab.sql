@@ -32,7 +32,7 @@ BEGIN
     IF EXISTS (SELECT * FROM colaborador WHERE nombre = aNombre) THEN
 		SELECT id INTO IDAd FROM colaborador WHERE nombre = aNombre;
         IF NOT EXISTS (SELECT * FROM InfoEmergencia WHERE Colaborador_id = IDAd) THEN
-			INSERT INTO InfoEmergencia(id, TipoSangre, Encargado, Adolescente_id) VALUES (IDNum, aSangre, aEncargado, IDAd);
+			INSERT INTO InfoEmergencia(id, TipoSangre, Encargado, Colaborador_id) VALUES (IDNum, aSangre, aEncargado, IDAd);
 		END IF;
 	END IF;
 END; //
@@ -47,8 +47,8 @@ BEGIN
     DECLARE IDAd INT DEFAULT 0;
     SELECT MAX(id) INTO IDNum FROM Telefono;
     SET IDNum = IDNum +1;
-    IF EXISTS (SELECT * FROM colaborador WHERE Nombre = aNombre) THEN
-		SELECT id INTO IDAd FROM colaborador WHERE Nombre = aNombre;
+    IF EXISTS (SELECT * FROM colaborador WHERE colaborador.Nombre = aNombre) THEN
+		SELECT id INTO IDAd FROM colaborador WHERE colaborador.Nombre = aNombre;
         IF EXISTS (SELECT * FROM InfoEmergencia WHERE InfoEmergencia.Colaborador_id = IDAd) THEN
 			SELECT id INTO IDAd FROM InfoEmergencia WHERE InfoEmergencia.Colaborador_id = IDAd;
             IF NOT EXISTS (SELECT * FROM Telefono WHERE Telefono = aTelefono AND InfoEmergencia_id = IDAd) THEN
