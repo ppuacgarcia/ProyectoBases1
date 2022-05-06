@@ -45,11 +45,12 @@ def ColForm(pw):
     lab('Fecha de Nacimiento', fuenteP, bglabel, fglabel, posx, 130)
     lab('Sexo', fuenteP, bglabel, fglabel, posx, 165)
     lab('Rango', fuenteP, bglabel, fglabel, posx, 200)
-    lab('Informacion de Enmergencia', fuenteG, bglabel, fglabel, posx, 240)
-    lab('Contacto', fuenteP, bglabel, fglabel, posx, 290)
-    lab('Telefono', fuenteP, bglabel, fglabel, posx, 325)
-    lab('Tipo de Sangre', fuenteP, bglabel, fglabel, posx, 360)
-    lab('Alergias', fuenteP, bglabel, fglabel, posx, 395)
+    lab('Informacion de Enmergencia', fuenteG, bglabel, fglabel, posx, 270)
+    lab('Contacto', fuenteP, bglabel, fglabel, posx, 320)
+    lab('Telefono', fuenteP, bglabel, fglabel, posx, 355)
+    lab('Tipo de Sangre', fuenteP, bglabel, fglabel, posx, 390)
+    lab('Alergias', fuenteP, bglabel, fglabel, posx, 425)
+    lab('Telefono', fuenteP, bglabel, fglabel, posx, 230)
 
 
     name = StringVar()
@@ -85,10 +86,12 @@ def ColForm(pw):
     nombre=Ent(name, 65, 175, 105)
     cal=DateEntry(w,width=30)
     cal.place(x=295,y=140)
-    contacto=Ent(Contacto, 65, 175, 300)
-    Telefono1=Ent(Telefono, 20, 175, 335)
-    tipoSangre=Ent(TipoSangre, 54, 240, 370)
-    alergia=Ent(Alergias, 20, 175, 405)
+    contacto=Ent(Contacto, 65, 175, 330)
+    Telefono1=Ent(Telefono, 20, 175, 365)
+    tipoSangre=Ent(TipoSangre, 54, 240, 400)
+    alergia=Ent(Alergias, 20, 175, 435)
+    telefonoColab=Ent(w,20, 175, 240)
+    
     def agregarTelefono():
         if len(Telefono1.get())!=0:
             listaTelefono.insert(END,Telefono1.get())
@@ -151,10 +154,11 @@ def ColForm(pw):
         buttons.place(x=x, y=y)
     
     btn(w, 975, 600, 'guardar', '#000000', '#FF4e10', agregarRegistro,'Arial', 12,'bold',18,2)
-    btn(w,posx+230,331,'guardar telefono','#000000','#FF4e10',agregarTelefono,'Arial',12,'bold',13,1)
-    btn(w,posx+230,401,'guardar alergia','#000000','#FF4e10',agregarAlergia,'Arial',12,'bold',13,1)
+    btn(w,posx+230,361,'guardar telefono','#000000','#FF4e10',agregarTelefono,'Arial',12,'bold',13,1)
+    btn(w,posx+230,431,'guardar alergia','#000000','#FF4e10',agregarAlergia,'Arial',12,'bold',13,1)
     btn(w, 575, 600, 'Borrar', '#000000', '#FF4e10', borrarRegistro,'Arial', 12,'bold',18,2)
     btn(w, 775, 600, 'Editar', '#000000', '#FF4e10', editarRegistro,'Arial', 12,'bold',18,2)
+    btn(w,posx+230,233,'guardar telefono','#000000','#FF4e10',agregarTelefono,'Arial',12,'bold',13,1)
 
     
     def tb(w,x,y):
@@ -162,8 +166,9 @@ def ColForm(pw):
         tabla.place(x=x,y=y)
         tabla.config(height=1)
         return tabla
-    listaTelefono=tb(w,450,335)
-    listaAlergia=tb(w,450,405)
+    listaTelefono=tb(w,450,365)
+    listaAlergia=tb(w,450,435)
+    listaTelefonoColab=tb(w,450,240)
     
     #Tabla
     tabladata = ttk.Treeview(w)
