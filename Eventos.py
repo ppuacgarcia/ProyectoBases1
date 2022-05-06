@@ -62,9 +62,6 @@ class EvtForm:
 
     def cmd(self):
         self.w.destroy()
-        
-    def Asistencia(self):
-        AsisForm(self.principal, 1)
     
 
     #Labels formulario
@@ -206,3 +203,6 @@ class EvtForm:
         self.asistencia["state"]="disable"
         self.editar["state"]="disable"
         self.borrar["state"]="disable"
+
+    def Asistencia(self):
+        AsisForm(self.principal, self.idViejo).mostrarDatos()
