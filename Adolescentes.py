@@ -1,9 +1,11 @@
+from asyncio.windows_events import NULL
 from optparse import Values
 from tkinter import *
 from PIL import Image, ImageTk
 from Menu import *
 from tkinter import ttk
 from tkcalendar import *
+from datetime import datetime
 import mariadb
 class AdolForm:
     
@@ -40,7 +42,7 @@ class AdolForm:
 
         #ComboBox
         self.genero=ttk.Combobox(self.w,width=62)
-        self.genero['values']=('Masculino','Femenino')
+        self.genero['values']=('MASCULINO','FEMENINO')
         self.genero.current(0)
         self.genero["state"]="readonly"
         self.genero.pack()
@@ -72,6 +74,7 @@ class AdolForm:
         self.tabla.heading("col2",text="Genero",anchor=CENTER)
         self.tabla.heading("col3",text="Fecha Nacimiento",anchor=CENTER)
         self.tabla.place(x=620,y=100)
+        self.tabla.bind("<Double-Button-1>",self.doubleClickTabla)
         
         
    
@@ -173,24 +176,21 @@ class AdolForm:
             query="call InsertarIEA('" + self.mayus(self.nombre.get()) + "', '" + self.mayus(self.tipoSangre.get()) + "', '" + self.mayus(self.contacto.get()) + "');"
             self.consultaBD(query)
             for telefono in self.listaTelefono.get(0,END):
-                query="call InsertarTA('" + self.mayus(self.nombre.get()) + "', '" + telefono + "');"
+                query="call InsertarTIEA('" + self.mayus(self.nombre.get()) + "', '" + telefono + "');"
                 self.consultaBD(query)
             for alergia in self.listaAlergia.get(0,END):
                 query="call InsertarAA('" + self.mayus(self.nombre.get()) + "', '" + self.mayus(alergia) + "');"
                 self.consultaBD(query)
+        self.nombre.delete(0,END)
+        self.genero.current(0)
+        self.tipoSangre.delete(0,END)
+        self.contacto.delete(0,END)
+        self.listaTelefono.delete(0,END)
+        self.listaAlergia.delete(0,END)
         self.nombre.focus()
+        self.alergia.delete(0,END)
+        self.telefono.delete(0,END)
         self.mostrarDatos()
-
-    def editarRegistro(self):
-        if len(self.nombre.get())!=0 and len(self.clave.get())!=0:
-            query="UPDATE escuela.alumnos SET nombre='" + self.nombre.get() + "', genero='" + self.genero.get() + "', fechanacimiento='" + str(self.calendario.get_date()) + "' where id='" + self.idViejo + "';"
-            self.consultaBD(query)
-            self.nombre.delete(0,END)
-            self.genero.current(0)
-            self.calendario.set_date()
-            self.nombre.focus()
-        self.mostrarDatos()
-        self.guardarAdolecente["state"]="normal"
 
     def mostrarDatos(self,where=""):
         registro=self.tabla.get_children()
@@ -202,10 +202,77 @@ class AdolForm:
             cur=self.consultaBD("SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente")
         for (id,nombre,genero,fechanacimiento) in cur:
             self.tabla.insert('',0,text=id,values=[nombre,genero,fechanacimiento])
-            
+
+    def doubleClickTabla(self,event):
+        self.idViejo=str(self.tabla.item(self.tabla.selection())["text"])
+        self.nombre.delete(0,END)
+        self.genero.current(0)
+        self.tipoSangre.delete(0,END)
+        self.contacto.delete(0,END)
+        self.listaTelefono.delete(0,END)
+        self.listaAlergia.delete(0,END)
+        self.alergia.delete(0,END)
+        self.telefono.delete(0,END)
+        self.mostrarDatos()
+        self.guardarAdolecente["state"]="disable"
+        self.guardarTelefono["state"]="normal"
+        self.guardarAlergia["state"]="normal"
+        self.editar["state"]="normal"
+        self.borrar["state"]="normal"
+        
+        cur=self.consultaBD("SELECT adolescente.nombre, adolescente.genero, adolescente.fechanacimiento, infoemergencia.tiposangre, infoemergencia.encargado FROM iglesia.adolescente JOIN iglesia.infoemergencia ON adolescente.id = infoemergencia.adolescente_id WHERE adolescente.id = '" + self.idViejo + "';")
+        for (nombre,genero,fechanacimiento,tiposangre,encargado) in cur:
+            self.nombre.insert(0,nombre)
+            self.genero.insert(0,genero)
+            self.calendario.set_date(fechanacimiento)
+            self.tipoSangre.insert(0,tiposangre)
+            self.contacto.insert(0,encargado)
+
     def borrarRegistro(self, where = ""):
-        None
+        if len(self.nombre.get())!=0 and len(self.contacto.get())!=0 and len(self.tipoSangre.get())!=0:
+            query="call BorrarAdolescente('" + self.mayus(self.nombre.get()) + "');"
+            self.consultaBD(query)
+            self.nombre.delete(0,END)
+            self.genero.current(0)
+            self.tipoSangre.delete(0,END)
+            self.contacto.delete(0,END)
+            self.listaTelefono.delete(0,END)
+            self.listaAlergia.delete(0,END)
+            self.nombre.focus()
+            self.alergia.delete(0,END)
+            self.telefono.delete(0,END)
+            self.mostrarDatos()
+        self.guardarAdolecente["state"]="normal"
+        self.guardarTelefono["state"]="normal"
+        self.guardarAlergia["state"]="normal"
+        self.editar["state"]="disable"
+        self.borrar["state"]="disable"
         
     def editarRegistro(self, where = ""):
-        None
+        if len(self.nombre.get())!=0 and len(self.contacto.get())!=0 and len(self.tipoSangre.get())!=0:
+            query="UPDATE iglesia.adolescente SET nombre='" + self.mayus(self.nombre.get()) + "', genero='" + self.mayus(self.genero.get()) + "', fechanacimiento='" + str(self.calendario.get_date()) + "' where id='" + self.idViejo + "';"
+            self.consultaBD(query)
+            query="UPDATE iglesia.infoemergencia SET tiposangre='" + self.mayus(self.tipoSangre.get()) + "', encargado='" + self.mayus(self.contacto.get()) +"' where adolescente_id='" + self.idViejo + "';"
+            self.consultaBD(query)
+            for telefono in self.listaTelefono.get(0,END):
+                query="call InsertarTIEA('" + self.mayus(self.nombre.get()) + "', '" + telefono + "');"
+                self.consultaBD(query)
+            for alergia in self.listaAlergia.get(0,END):
+                query="call InsertarAA('" + self.mayus(self.nombre.get()) + "', '" + self.mayus(alergia) + "');"
+                self.consultaBD(query)
+            self.nombre.delete(0,END)
+            self.genero.current(0)
+            self.tipoSangre.delete(0,END)
+            self.contacto.delete(0,END)
+            self.listaTelefono.delete(0,END)
+            self.listaAlergia.delete(0,END)
+            self.nombre.focus()
+            self.alergia.delete(0,END)
+            self.telefono.delete(0,END)
+            self.mostrarDatos()
+        self.guardarAdolecente["state"]="normal"
+        self.guardarTelefono["state"]="normal"
+        self.guardarAlergia["state"]="normal"
+        self.editar["state"]="disable"
+        self.borrar["state"]="disable"
     
