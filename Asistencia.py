@@ -7,9 +7,8 @@ from tkinter import ttk
 from tkcalendar import *
 import mariadb
 
-def ColForm(pw):
+def AsisForm(pw):
     
-    #
     w = Frame(pw,width=1200,height=675,bg='#707070')
     w.place(x=0, y=0)
     fuenteG = font=('Comic Sans MS', 19,'bold')
@@ -42,26 +41,10 @@ def ColForm(pw):
 
 
     lab('Registro Colaboradores', fuenteG, bglabel, fglabel, 490, 10)
-    lab('Datos Generales', fuenteG, bglabel, fglabel, posx, 55)
-    lab('Nombre', fuenteP, bglabel, fglabel, posx, 95)
-    lab('Fecha de Nacimiento', fuenteP, bglabel, fglabel, posx, 130)
-    lab('Sexo', fuenteP, bglabel, fglabel, posx, 165)
-    lab('Rango', fuenteP, bglabel, fglabel, posx, 200)
-    lab('Informacion de Enmergencia', fuenteG, bglabel, fglabel, posx, 240)
-    lab('Contacto', fuenteP, bglabel, fglabel, posx, 290)
-    lab('Telefono', fuenteP, bglabel, fglabel, posx, 325)
-    lab('Tipo de Sangre', fuenteP, bglabel, fglabel, posx, 360)
-    lab('Alergias', fuenteP, bglabel, fglabel, posx, 395)
+
 
 
     name = StringVar()
-    fechanac = StringVar()
-    Sexo = StringVar()
-    Rango = StringVar()
-    Contacto = StringVar()
-    Telefono = int()
-    TipoSangre = StringVar()
-    Alergias = StringVar()
 
     #Cuadros de Texto
     def Ent(textvar, width, x, y):
@@ -71,25 +54,7 @@ def ColForm(pw):
         
 
     Ent(name, 65, 175, 105)
-    cal=DateEntry(w,width=30)
-    cal.place(x=295,y=140)
-    Ent(Contacto, 65, 175, 300)
-    Ent(Telefono, 20, 175, 335)
-    Ent(TipoSangre, 54, 240, 370)
-    Ent(Alergias, 20, 175, 405)
 
-    valrang = ['Ministro','Lider','Teacher']
-    comboRan = ttk.Combobox(w, value=valrang, width=62)
-    comboRan.place(x=175, y=210)
-    comboRan["state"]="readonly"
-    comboRan.current(2)
-    
-    valS = ['Masculino', 'Femenino']
-    comboS = ttk.Combobox(w, value=valS, width=62)
-    comboS.place(x=175, y=175)
-    comboS["state"]="readonly"
-    comboS.current(0)
-    
     
     #Funcion para crear botones
     def btn(f1, x, y, text, bcolor, fcolor, command, font, siz, tipe,wdt,ht):
@@ -121,7 +86,7 @@ def ColForm(pw):
     tb(w,450,335)
     tb(w,450,405)
     
-    #Tabla
+    #Tabla Adolescentes
     tabladata = ttk.Treeview(w)
     tabladata=ttk.Treeview(w,columns=("col1","col2","col3"), height=21)
     tabladata.column("#0", width=80)
@@ -132,6 +97,19 @@ def ColForm(pw):
     tabladata.heading("col1",text="Nombre",anchor=CENTER)
     tabladata.heading("col2",text="Genero",anchor=CENTER)
     tabladata.heading("col3",text="Edad",anchor=CENTER)
-    tabladata.place(x=620,y=100)
+    tabladata.place(x=60,y=100)
     
+    
+    #Tabla Asistencia
+    tabla = ttk.Treeview(w)
+    tabla=ttk.Treeview(w,columns=("col1","col2","col3"), height=21)
+    tabla.column("#0", width=80)
+    tabla.column("col1",width=240, anchor=CENTER)
+    tabla.column("col2",width=100, anchor=CENTER)
+    tabla.column("col3",width=80, anchor=CENTER)
+    tabla.heading("#0",text="Id",anchor=CENTER)
+    tabla.heading("col1",text="Nombre",anchor=CENTER)
+    tabla.heading("col2",text="Genero",anchor=CENTER)
+    tabla.heading("col3",text="Edad",anchor=CENTER)
+    tabla.place(x=620,y=100)
     
