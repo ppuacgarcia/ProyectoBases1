@@ -21,7 +21,7 @@ flog.place(x=0, y=0)
 
 
 def Correcto():
-    if(Username.get()=="admin" and Password.get()=="1234"):
+    if(Username.get()=="" and Password.get()==""):
         MenP(pw)
         flog.destroy()
         print("entro")
