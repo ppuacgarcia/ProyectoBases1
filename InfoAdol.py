@@ -142,8 +142,8 @@ class adolinfo:
             conn=mariadb.connect(
                 host="localhost",
                 user="root",
-                #password="123456789",
-                password="Kamado_Tanjiro_12",
+                password="123456789",
+                #password="Kamado_Tanjiro_12",
                 database="iglesia",
                 autocommit=True
             )
