@@ -104,7 +104,7 @@ def colabinfo(pw):
         buttons.place(x=x, y=y)
     
     btn(w, 570, 72, 'Nombre', '#000000', '#FF4e10', NomSearch,'Arial', 12,'bold',10,1)
-    btn(w, 680, 72, 'Fecha', '#000000', '#FF4e10', FechaSearch,'Arial', 12,'bold',10,1)
+    btn(w, 680, 72, 'Edad', '#000000', '#FF4e10', FechaSearch,'Arial', 12,'bold',10,1)
     btn(w, 1010, 72, 'Genero', '#000000', '#FF4e10', GenSearch,'Arial', 12,'bold',10,1)
     
     

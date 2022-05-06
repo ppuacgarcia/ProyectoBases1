@@ -5,6 +5,7 @@ from PIL import Image, ImageTk
 from Menu import *
 from tkcalendar import *
 from tkinter import ttk
+from Asistencia import AsisForm
 
 def EvtForm(pw):
     
@@ -30,7 +31,7 @@ def EvtForm(pw):
         None
         
     def Asistencia():
-        None
+        AsisForm(pw, 1)
         
     global img1
     img1 = ImageTk.PhotoImage(Image.open('Images/HM.png')) 

@@ -7,7 +7,7 @@ from tkinter import ttk
 from tkcalendar import *
 import mariadb
 
-def AsisForm(pw):
+def AsisForm(pw, idEvent):
     
     w = Frame(pw,width=1200,height=675,bg='#707070')
     w.place(x=0, y=0)
@@ -17,17 +17,15 @@ def AsisForm(pw):
     fglabel = '#FFFFFF'
     posx = 80
 
-    def Sav():
+    def confirmarAsistencia():
         None
         
     def cmd():
         w.destroy()
         
-    def borrarRegistro():
+    def buscarAdolescente():
         None
     
-    def editarRegistro():
-        None    
     
     global img1
     img1 = ImageTk.PhotoImage(Image.open('Images/HM.png')) 
@@ -40,20 +38,8 @@ def AsisForm(pw):
         labe.place(x=x, y=y)
 
 
-    lab('Registro Colaboradores', fuenteG, bglabel, fglabel, 490, 10)
+    lab('Asistencia', fuenteG, bglabel, fglabel, 500, 10)
 
-
-
-    name = StringVar()
-
-    #Cuadros de Texto
-    def Ent(textvar, width, x, y):
-        Entr = Entry(w,textvariable=textvar, width=width)
-        Entr.pack()
-        Entr.place(x=x, y=y)
-        
-
-    Ent(name, 65, 175, 105)
 
     
     #Funcion para crear botones
@@ -73,22 +59,21 @@ def AsisForm(pw):
         buttons.bind("<Leave>", on_leave)
         buttons.place(x=x, y=y)
     
-    btn(w, 975, 600, 'guardar', '#000000', '#FF4e10', Sav,'Arial', 12,'bold',18,2)
-    btn(w,posx+230,331,'guardar telefono','#000000','#FF4e10',Sav,'Arial',12,'bold',13,1)
-    btn(w,posx+230,401,'guardar alergia','#000000','#FF4e10',Sav,'Arial',12,'bold',13,1)
-    btn(w, 575, 600, 'Borrar', '#000000', '#FF4e10', borrarRegistro,'Arial', 12,'bold',18,2)
-    btn(w, 775, 600, 'Editar', '#000000', '#FF4e10', editarRegistro,'Arial', 12,'bold',18,2)
+    btn(w, 975, 600, 'confirmar asistencia', '#000000', '#FF4e10', confirmarAsistencia,'Arial', 12,'bold',18,2)
+    btn(w, 60, 115, 'buscar', '#000000', '#FF4e10', buscarAdolescente,'Arial', 12,'bold',10,1)
     
-    def tb(w,x,y):
-        tabla=Listbox(w)
-        tabla.place(x=x,y=y)
-        tabla.config(height=1)
-    tb(w,450,335)
-    tb(w,450,405)
+    def Ent(textvar, width, x, y):
+        Entr = Entry(w,textvariable=textvar, width=width)
+        Entr.pack()
+        Entr.place(x=x, y=y)
+     
+    busqueda = StringVar()  
+
+    Ent(busqueda, 64, 175, 115)
     
     #Tabla Adolescentes
     tabladata = ttk.Treeview(w)
-    tabladata=ttk.Treeview(w,columns=("col1","col2","col3"), height=21)
+    tabladata=ttk.Treeview(w,columns=("col1","col2","col3"), height=19)
     tabladata.column("#0", width=80)
     tabladata.column("col1",width=240, anchor=CENTER)
     tabladata.column("col2",width=100, anchor=CENTER)
@@ -97,7 +82,7 @@ def AsisForm(pw):
     tabladata.heading("col1",text="Nombre",anchor=CENTER)
     tabladata.heading("col2",text="Genero",anchor=CENTER)
     tabladata.heading("col3",text="Edad",anchor=CENTER)
-    tabladata.place(x=60,y=100)
+    tabladata.place(x=60,y=150)
     
     
     #Tabla Asistencia
@@ -111,5 +96,5 @@ def AsisForm(pw):
     tabla.heading("col1",text="Nombre",anchor=CENTER)
     tabla.heading("col2",text="Genero",anchor=CENTER)
     tabla.heading("col3",text="Edad",anchor=CENTER)
-    tabla.place(x=620,y=100)
+    tabla.place(x=620,y=110)
     
