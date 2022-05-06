@@ -202,11 +202,16 @@ class AdolForm:
         for registro in registro:
             self.tabla.delete(registro)
         if len(where)>0:
-            cur=self.consultaBD("SELECT id, Nombre, Genero, FechaNacimiento FROM iglesia.adolescente " + where)
+            cur=self.consultaBD("SELECT id, Nombre, Genero, FechaNacimiento FROM iglesia.adolescente " + where + " ORDER BY nombre DESC")
         else:
-            cur=self.consultaBD("SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente")
+            cur=self.consultaBD("SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC")
         for (id,nombre,genero,fechanacimiento) in cur:
             self.tabla.insert('',0,text=id,values=[nombre,genero,fechanacimiento])
+        self.guardarAdolecente["state"]="normal"
+        self.guardarTelefono["state"]="normal"
+        self.guardarAlergia["state"]="normal"
+        self.editar["state"]="disable"
+        self.borrar["state"]="disable"
 
     def doubleClickTabla(self,event):
         self.idViejo=str(self.tabla.item(self.tabla.selection())["text"])
