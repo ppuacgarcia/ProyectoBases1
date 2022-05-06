@@ -135,11 +135,15 @@ class EvtForm:
         for registro in registro:
             self.tabladata.delete(registro)
         if len(where)>0:
-            cur=self.consultaBD("SELECT id, nombre, fecha, hora, lugar FROM iglesia.evento " + where)
+            cur=self.consultaBD("SELECT id, nombre, fecha, hora, lugar FROM iglesia.evento " + where + " ORDER BY fecha DESC")
         else:
-            cur=self.consultaBD("SELECT id, nombre, fecha, hora, lugar FROM iglesia.evento;")
+            cur=self.consultaBD("SELECT id, nombre, fecha, hora, lugar FROM iglesia.evento ORDER BY fecha DESC")
         for (id,nombre,fecha,hora,lugar) in cur:
             self.tabladata.insert('',0,text=id,values=[nombre,fecha,hora,lugar])
+        self.guardar["state"]="normal"
+        self.asistencia["state"]="disable"
+        self.editar["state"]="disable"
+        self.borrar["state"]="disable"
 
     def agregarRegistro(self):
         if len(self.nombre.get())!=0 and len(self.hora.get())!=0 and len(self.lugar.get())!=0 and len(str(self.cal.get_date()))!=0:
