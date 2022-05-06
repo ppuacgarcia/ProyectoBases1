@@ -177,6 +177,5 @@ def ColForm(pw):
     tabladata.heading("col2",text="Genero",anchor=CENTER)
     tabladata.heading("col3",text="Edad",anchor=CENTER)
     tabladata.place(x=620,y=100)
-
     mostrarDatos()
 

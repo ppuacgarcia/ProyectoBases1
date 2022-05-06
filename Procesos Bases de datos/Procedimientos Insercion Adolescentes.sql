@@ -8,7 +8,7 @@ BEGIN
 	DECLARE IDNum INT DEFAULT 0;
     SELECT MAX(id) INTO IDNum FROM Adolescente;
     SET IDNum = IDNum +1;
-    IF NOT EXISTS (SELECT * FROM Adolescente WHERE Nombre = aNombre AND FechaNacimiento = aNacimiento) THEN
+    IF  EXISTS (SELECT * FROM Adolescente WHERE Nombre = aNombre AND FechaNacimiento = aNacimiento) THEN
 		INSERT INTO Adolescente(id, Nombre, Genero, FechaNacimiento) VALUES (IDNum, aNombre, aGenero, aNacimiento);
 	END IF;
 END; //
