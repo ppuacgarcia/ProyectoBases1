@@ -130,10 +130,14 @@ class AdolForm:
     #Llenar cuadros de texto
 
     #Convertir cadenas a mayuscula
-    def mayusnomNombre(nombreB):
+    def mayus(self,nombreB):
+        result=""
         for i in range ( len (nombreB) ):
             if(ord(nombreB[i])>96 and ord(nombreB[i])<122):
-                nombreB[i]=chr(ord(nombreB[i])-32)
+               result+=chr(ord(nombreB[i])-32)
+            else:
+                result+=nombreB[i]
+        return result
 
 
     #Metodos para ingresar a la base de datos
@@ -142,7 +146,7 @@ class AdolForm:
             conn=mariadb.connect(
                 host="localhost",
                 user="root",
-                password="admin",
+                password="Kamado_Tanjiro_12",
                 database="iglesia",
                 autocommit=True
             )
@@ -164,15 +168,15 @@ class AdolForm:
 
     def agregarRegistro(self):
         if len(self.nombre.get())!=0 and len(self.contacto.get())!=0 and len(self.tipoSangre.get())!=0:
-            query="call InsertarAdolescente('" + self.nombre.get() + "', '" + self.genero.get() + "','" + str(self.calendario.get_date()) + "');"
+            query="call InsertarAdolescente('" + self.mayus(self.nombre.get()) + "', '" + self.mayus(self.genero.get()) + "','" + str(self.calendario.get_date()) + "');"
             self.consultaBD(query)
-            query="call InsertarIEA('" + self.nombre.get() + "', '" + self.tipoSangre.get() + "', '" + self.contacto.get() + "');"
+            query="call InsertarIEA('" + self.mayus(self.nombre.get()) + "', '" + self.mayus(self.tipoSangre.get()) + "', '" + self.mayus(self.contacto.get()) + "');"
             self.consultaBD(query)
             for telefono in self.listaTelefono.get(0,END):
-                query="call InsertarTA('" + self.nombre.get() + "', '" + telefono + "');"
+                query="call InsertarTA('" + self.mayus(self.nombre.get()) + "', '" + telefono + "');"
                 self.consultaBD(query)
             for alergia in self.listaAlergia.get(0,END):
-                query="call InsertarAA('" + self.nombre.get() + "', '" + alergia + "');"
+                query="call InsertarAA('" + self.mayus(self.nombre.get()) + "', '" + self.mayus(alergia) + "');"
                 self.consultaBD(query)
         self.nombre.focus()
         self.mostrarDatos()
