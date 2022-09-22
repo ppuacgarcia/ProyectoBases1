@@ -19,6 +19,25 @@ BEGIN
 		INSERT INTO colaborador(FechaNacimiento, Nombre, Genero, Rango_id) VALUES (cNacimiento, cNombre, cGenero,IDrang);
 	END IF;
 END; //
+
+/*Insertar Telefonos de Adolescentes:*/
+delimiter //
+DROP PROCEDURE IF EXISTS InsertarTC //
+CREATE PROCEDURE InsertarTC(cNombre VARCHAR(45), cTelefono VARCHAR(12))
+BEGIN
+	DECLARE IDNum INT DEFAULT 0;
+    DECLARE IDAd INT DEFAULT 0;
+    SELECT MAX(id) INTO IDNum FROM Telefono;
+    SET IDNum = IDNum +1;
+    IF EXISTS (SELECT * FROM Colaborador WHERE Colaborador.nombre = cNombre) THEN
+		SELECT id INTO IDAd FROM Colaborador WHERE Colaborador.nombre = cNombre;
+        IF NOT EXISTS (SELECT * FROM Telefono WHERE Telefono = cTelefono AND Colaborador_id = IDAd) THEN
+			INSERT INTO Telefono(id, Telefono, Colaborador_id) VALUES (IDNum, cTelefono, IDAd);
+		END IF;
+	END IF;
+END; //
+delimiter ;
+
 delimiter ;
 /*Insertar Informacion de Emergencia de Adolescentes:*/
 delimiter //

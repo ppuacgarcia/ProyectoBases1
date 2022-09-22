@@ -5,12 +5,15 @@ from PIL import Image, ImageTk
 from Menu import *
 from tkinter import ttk
 from tkcalendar import *
+from Conexion import conexion
 import mariadb
 
 class AsisForm:
     
     def __init__(self,pw, idEvento):
+        self.idEvento = idEvento
         self.w = Frame(pw,width=1200,height=675,bg='#707070')
+        self.conn = conexion()
         self.w.place(x=0, y=0)
         self.fuenteG = font=('Comic Sans MS', 19,'bold')
         self.fuenteP = font=('Comic Sans MS', 15,'bold')
@@ -40,6 +43,7 @@ class AsisForm:
         self.tabladata.heading("col2",text="Genero",anchor=CENTER)
         self.tabladata.heading("col3",text="Fecha nacimiento",anchor=CENTER)
         self.tabladata.place(x=60,y=150)
+        self.tabladata.bind("<Double-Button-1>",self.doubleClickTabla)
         
         
         #Tabla Asistencia
@@ -55,14 +59,10 @@ class AsisForm:
         self.tabla.heading("col3",text="Fecha nacimiento",anchor=CENTER)
         self.tabla.place(x=620,y=110)
 
-    def confirmarAsistencia():
-        None
+    
         
     def cmd(self):
         self.w.destroy()
-        
-    def buscarAdolescente():
-        None
     
 
     #Labels formulario
@@ -95,36 +95,44 @@ class AsisForm:
         Entr.pack()
         Entr.place(x=x, y=y)
         return Entr
-     
 
+    def mayus(self,nombreB):
+        result=""
+        for i in range ( len (nombreB) ):
+            if(ord(nombreB[i])>96 and ord(nombreB[i])<122):
+               result+=chr(ord(nombreB[i])-32)
+            else:
+                result+=nombreB[i]
+        return result
 
-    def consultaBD(self,query):
-        try:
-            conn=mariadb.connect(
-                host="localhost",
-                user="root",
-                #password="123456789",
-                password="Kamado_Tanjiro_12",
-                database="iglesia",
-                autocommit=True
-            )
-        except mariadb.Error as e:
-            print("Error al conectarse a la bd",e)
-        cur = conn.cursor()
-        id2=cur.execute(query)
-        print("PRIMERO   "+str(id2))
-        return cur
+    def doubleClickTabla(self,event):
+        self.idViejo=str(self.tabladata.item(self.tabladata.selection())["text"])
+        print(self.idViejo)
+        print(self.idEvento)
+
+    def confirmarAsistencia(self):
+        self.conn.consultaBD("INSERT INTO AsistenciaAdolescente(Evento_id, Adolescente_id) VALUES(" + self.idEvento + ", " + self.idViejo + ")")
+        self.mostrarDatos()
     
     def mostrarDatos(self,where=""):
         registro=self.tabladata.get_children()
         for registro in registro:
             self.tabladata.delete(registro)
+        registro=self.tabla.get_children()
+        for registro in registro:
+            self.tabla.delete(registro)
         if len(where)>0:
-            cur=self.consultaBD("SELECT id, Nombre, Genero, FechaNacimiento FROM iglesia.adolescente " + where + " ORDER BY nombre DESC")
+            cur=self.conn.consultaBD("SELECT id, Nombre, Genero, FechaNacimiento FROM iglesia.adolescente " + where + " ORDER BY nombre DESC")
         else:
-            cur=self.consultaBD("SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC")
+            cur=self.conn.consultaBD("SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC")
         for (id,nombre,genero,fechanacimiento) in cur:
             self.tabladata.insert('',0,text=id,values=[nombre,genero,fechanacimiento])
-    
+        cur=self.conn.consultaBD("SELECT adolescente.id, adolescente.nombre, adolescente.genero, adolescente.fechanacimiento FROM iglesia.evento INNER JOIN iglesia.asistenciaadolescente ON evento.id = asistenciaadolescente.evento_id INNER JOIN iglesia.adolescente ON asistenciaadolescente.adolescente_id = adolescente.id WHERE evento.id = " + self.idEvento)
+        for (id,nombre,genero,fechanacimiento) in cur:
+            self.tabla.insert('',0,text=id,values=[nombre,genero,fechanacimiento])
+
+    def buscarAdolescente(self):
+        if (len(self.referencia.get())>0):
+            self.mostrarDatos("WHERE Nombre = '" + self.mayus(self.referencia.get()) + "'")
     
     

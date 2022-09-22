@@ -7,9 +7,11 @@ from tkinter import ttk
 from tkcalendar import *
 from datetime import datetime
 import mariadb
+from Conexion import conexion
 class AdolForm:
     
     def __init__(self,ventanaPrincipal):
+        self.conn = conexion()
         self.w = Frame(ventanaPrincipal,width=1200,height=675,bg='#707070')
         self.w.place(x=0, y=0)
         self.fuenteG = font=('Comic Sans MS', 19,'bold')
@@ -60,7 +62,7 @@ class AdolForm:
         self.guardarAlergia=self.btn(self.w,self.posx+230,401,'Guardar Alergia','#000000','#FF4e10',self.agregarAlergia,'Arial',12,'bold',13,1)
         self.borrar=self.btn(self.w, 575, 600, 'Borrar', '#000000', '#FF4e10', self.borrarRegistro,'Arial', 12,'bold',18,2)
         self.editar=self.btn(self.w, 775, 600, 'Editar', '#000000', '#FF4e10', self.editarRegistro,'Arial', 12,'bold',18,2)
-        self.guardarTelefonoAdo=self.btn(self.w,self.posx+230,200,'Guardar Telefono','#000000','#FF4e10',self.agregarTelefono,'Arial',12,'bold',13,1)
+        self.guardarTelefonoAdo=self.btn(self.w,self.posx+230,200,'Guardar Telefono','#000000','#FF4e10',self.agregarTelefonoAdol,'Arial',12,'bold',13,1)
         
         #Listas
         self.listaTelefono=self.tb(self.w,450,335)
@@ -129,6 +131,10 @@ class AdolForm:
     def agregarTelefono(self):
         if len(self.telefono.get())!=0:
             self.listaTelefono.insert(END,self.telefono.get())
+    
+    def agregarTelefonoAdol(self):
+        if len(self.telefonoadol.get())!=0:
+            self.listaTelefonoAdol.insert(END,self.telefonoadol.get())
 
     def agregarAlergia(self):
         if len(self.alergia.get())!=0:
@@ -146,28 +152,9 @@ class AdolForm:
                 result+=nombreB[i]
         return result
 
-
-    #Metodos para ingresar a la base de datos
-    def consultaBD(self,query):
-        try:
-            conn=mariadb.connect(
-                host="localhost",
-                user="root",
-                #password="123456789",
-                password="Kamado_Tanjiro_12",
-                database="iglesia",
-                autocommit=True
-            )
-        except mariadb.Error as e:
-            print("Error al conectarse a la bd",e)
-        cur = conn.cursor()
-        id2=cur.execute(query)
-        print("PRIMERO   "+str(id2))
-        return cur
-
     def obtenerID(self,query):
-        id = str(self.consultaBD(query))
-        records = self.consultaBD(query).fetchall()
+        id = str(self.conn.consultaBD(query))
+        records = self.conn.consultaBD(query).fetchall()
         print("\nPrinting each row")
         for row in records:
             print("Id = ", row[0], )
@@ -177,24 +164,29 @@ class AdolForm:
     def agregarRegistro(self):
         if len(self.nombre.get())!=0 and len(self.contacto.get())!=0 and len(self.tipoSangre.get())!=0:
             query="call InsertarAdolescente('" + self.mayus(self.nombre.get()) + "', '" + self.mayus(self.genero.get()) + "','" + str(self.calendario.get_date()) + "');"
-            self.consultaBD(query)
+            self.conn.consultaBD(query)
             query="call InsertarIEA('" + self.mayus(self.nombre.get()) + "', '" + self.mayus(self.tipoSangre.get()) + "', '" + self.mayus(self.contacto.get()) + "');"
-            self.consultaBD(query)
+            self.conn.consultaBD(query)
+            for telefono in self.listaTelefonoAdol.get(0,END):
+                query="call InsertarTA('" + self.mayus(self.nombre.get()) + "', '" + telefono + "');"
+                self.conn.consultaBD(query)
             for telefono in self.listaTelefono.get(0,END):
                 query="call InsertarTIEA('" + self.mayus(self.nombre.get()) + "', '" + telefono + "');"
-                self.consultaBD(query)
+                self.conn.consultaBD(query)
             for alergia in self.listaAlergia.get(0,END):
                 query="call InsertarAA('" + self.mayus(self.nombre.get()) + "', '" + self.mayus(alergia) + "');"
-                self.consultaBD(query)
+                self.conn.consultaBD(query)
         self.nombre.delete(0,END)
         self.genero.current(0)
         self.tipoSangre.delete(0,END)
         self.contacto.delete(0,END)
         self.listaTelefono.delete(0,END)
+        self.listaTelefonoAdol.delete(0,END)
         self.listaAlergia.delete(0,END)
         self.nombre.focus()
         self.alergia.delete(0,END)
         self.telefono.delete(0,END)
+        self.telefonoadol.delete(0,END)
         self.mostrarDatos()
 
     def mostrarDatos(self,where=""):
@@ -202,13 +194,14 @@ class AdolForm:
         for registro in registro:
             self.tabla.delete(registro)
         if len(where)>0:
-            cur=self.consultaBD("SELECT id, Nombre, Genero, FechaNacimiento FROM iglesia.adolescente " + where + " ORDER BY nombre DESC")
+            cur=self.conn.consultaBD("SELECT id, Nombre, Genero, FechaNacimiento FROM iglesia.adolescente " + where + " ORDER BY nombre DESC")
         else:
-            cur=self.consultaBD("SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC")
+            cur=self.conn.consultaBD("SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC")
         for (id,nombre,genero,fechanacimiento) in cur:
             self.tabla.insert('',0,text=id,values=[nombre,genero,fechanacimiento])
         self.guardarAdolecente["state"]="normal"
         self.guardarTelefono["state"]="normal"
+        self.guardarTelefonoAdo["state"]="normal"
         self.guardarAlergia["state"]="normal"
         self.editar["state"]="disable"
         self.borrar["state"]="disable"
@@ -220,17 +213,20 @@ class AdolForm:
         self.tipoSangre.delete(0,END)
         self.contacto.delete(0,END)
         self.listaTelefono.delete(0,END)
+        self.listaTelefonoAdol.delete(0,END)
         self.listaAlergia.delete(0,END)
         self.alergia.delete(0,END)
         self.telefono.delete(0,END)
+        self.telefonoadol.delete(0,END)
         self.mostrarDatos()
         self.guardarAdolecente["state"]="disable"
         self.guardarTelefono["state"]="normal"
+        self.guardarTelefonoAdo["state"]="normal"
         self.guardarAlergia["state"]="normal"
         self.editar["state"]="normal"
         self.borrar["state"]="normal"
         
-        cur=self.consultaBD("SELECT adolescente.nombre, adolescente.genero, adolescente.fechanacimiento, infoemergencia.tiposangre, infoemergencia.encargado FROM iglesia.adolescente JOIN iglesia.infoemergencia ON adolescente.id = infoemergencia.adolescente_id WHERE adolescente.id = '" + self.idViejo + "';")
+        cur=self.conn.consultaBD("SELECT adolescente.nombre, adolescente.genero, adolescente.fechanacimiento, infoemergencia.tiposangre, infoemergencia.encargado FROM iglesia.adolescente JOIN iglesia.infoemergencia ON adolescente.id = infoemergencia.adolescente_id WHERE adolescente.id = '" + self.idViejo + "';")
         for (nombre,genero,fechanacimiento,tiposangre,encargado) in cur:
             self.nombre.insert(0,nombre)
             self.genero.insert(0,genero)
@@ -241,19 +237,22 @@ class AdolForm:
     def borrarRegistro(self, where = ""):
         if len(self.nombre.get())!=0 and len(self.contacto.get())!=0 and len(self.tipoSangre.get())!=0:
             query="call BorrarAdolescente('" + self.mayus(self.nombre.get()) + "');"
-            self.consultaBD(query)
+            self.conn.consultaBD(query)
             self.nombre.delete(0,END)
             self.genero.current(0)
             self.tipoSangre.delete(0,END)
             self.contacto.delete(0,END)
             self.listaTelefono.delete(0,END)
+            self.listaTelefonoAdol.delete(0,END)
             self.listaAlergia.delete(0,END)
             self.nombre.focus()
             self.alergia.delete(0,END)
             self.telefono.delete(0,END)
+            self.telefonoadol.delete(0,END)
             self.mostrarDatos()
         self.guardarAdolecente["state"]="normal"
         self.guardarTelefono["state"]="normal"
+        self.guardarTelefonoAdo["state"]="normal"
         self.guardarAlergia["state"]="normal"
         self.editar["state"]="disable"
         self.borrar["state"]="disable"
@@ -261,27 +260,30 @@ class AdolForm:
     def editarRegistro(self, where = ""):
         if len(self.nombre.get())!=0 and len(self.contacto.get())!=0 and len(self.tipoSangre.get())!=0:
             query="UPDATE iglesia.adolescente SET nombre='" + self.mayus(self.nombre.get()) + "', genero='" + self.mayus(self.genero.get()) + "', fechanacimiento='" + str(self.calendario.get_date()) + "' where id='" + self.idViejo + "';"
-            self.consultaBD(query)
+            self.conn.consultaBD(query)
             query="UPDATE iglesia.infoemergencia SET tiposangre='" + self.mayus(self.tipoSangre.get()) + "', encargado='" + self.mayus(self.contacto.get()) +"' where adolescente_id='" + self.idViejo + "';"
-            self.consultaBD(query)
+            self.conn.consultaBD(query)
             for telefono in self.listaTelefono.get(0,END):
                 query="call InsertarTIEA('" + self.mayus(self.nombre.get()) + "', '" + telefono + "');"
-                self.consultaBD(query)
+                self.conn.consultaBD(query)
             for alergia in self.listaAlergia.get(0,END):
                 query="call InsertarAA('" + self.mayus(self.nombre.get()) + "', '" + self.mayus(alergia) + "');"
-                self.consultaBD(query)
+                self.conn.consultaBD(query)
             self.nombre.delete(0,END)
             self.genero.current(0)
             self.tipoSangre.delete(0,END)
             self.contacto.delete(0,END)
             self.listaTelefono.delete(0,END)
+            self.listaTelefonoAdol.delete(0,END)
             self.listaAlergia.delete(0,END)
             self.nombre.focus()
             self.alergia.delete(0,END)
             self.telefono.delete(0,END)
+            self.telefonoadol.delete(0,END)
             self.mostrarDatos()
         self.guardarAdolecente["state"]="normal"
         self.guardarTelefono["state"]="normal"
+        self.guardarTelefonoAdo["state"]="normal"
         self.guardarAlergia["state"]="normal"
         self.editar["state"]="disable"
         self.borrar["state"]="disable"

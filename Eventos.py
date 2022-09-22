@@ -7,12 +7,14 @@ from tkcalendar import *
 from tkinter import ttk
 import mariadb
 from Asistencia import AsisForm
+from Conexion import conexion
 
 class EvtForm:
     
     def __init__(self,pw):
         self.principal = pw
         self.w = Frame(pw,width=1200,height=675,bg='#707070')
+        self.conn = conexion()
         self.w.place(x=0, y=0)
         self.fuenteG = font=('Comic Sans MS', 19,'bold')
         self.fuenteP = font=('Comic Sans MS', 15,'bold')
@@ -110,31 +112,14 @@ class EvtForm:
                 result+=nombreB[i]
         return result
 
-    def consultaBD(self,query):
-        try:
-            conn=mariadb.connect(
-                host="localhost",
-                user="root",
-                #password="123456789",
-                password="Kamado_Tanjiro_12",
-                database="iglesia",
-                autocommit=True
-            )
-        except mariadb.Error as e:
-            print("Error al conectarse a la bd",e)
-        cur = conn.cursor()
-        id2=cur.execute(query)
-        print("PRIMERO   "+str(id2))
-        return cur
-
     def mostrarDatos(self,where=""):
         registro=self.tabladata.get_children()
         for registro in registro:
             self.tabladata.delete(registro)
         if len(where)>0:
-            cur=self.consultaBD("SELECT id, nombre, fecha, hora, lugar FROM iglesia.evento " + where + " ORDER BY fecha DESC")
+            cur=self.conn.consultaBD("SELECT id, nombre, fecha, hora, lugar FROM iglesia.evento " + where + " ORDER BY fecha DESC")
         else:
-            cur=self.consultaBD("SELECT id, nombre, fecha, hora, lugar FROM iglesia.evento ORDER BY fecha DESC")
+            cur=self.conn.consultaBD("SELECT id, nombre, fecha, hora, lugar FROM iglesia.evento ORDER BY fecha DESC")
         for (id,nombre,fecha,hora,lugar) in cur:
             self.tabladata.insert('',0,text=id,values=[nombre,fecha,hora,lugar])
         self.guardar["state"]="normal"
@@ -145,7 +130,7 @@ class EvtForm:
     def agregarRegistro(self):
         if len(self.nombre.get())!=0 and len(self.hora.get())!=0 and len(self.lugar.get())!=0 and len(str(self.cal.get_date()))!=0:
             query="call InsertarEvento('" + self.mayus(self.nombre.get()) + "', '" + str(self.cal.get_date()) + "','" + self.hora.get() + "','" + self.mayus(self.lugar.get()) + "');"
-            self.consultaBD(query)
+            self.conn.consultaBD(query)
         self.nombre.delete(0,END)
         self.hora.delete(0,END)
         self.lugar.delete(0,END)
@@ -168,7 +153,7 @@ class EvtForm:
         self.editar["state"]="normal"
         self.borrar["state"]="normal"
         
-        cur=self.consultaBD("SELECT nombre, fecha, hora, lugar FROM iglesia.evento WHERE evento.id = '" + self.idViejo + "';")
+        cur=self.conn.consultaBD("SELECT nombre, fecha, hora, lugar FROM iglesia.evento WHERE evento.id = '" + self.idViejo + "';")
         for (nombre,fecha,hora,lugar) in cur:
             self.nombre.insert(0,nombre)
             self.cal.set_date(fecha)
@@ -178,7 +163,7 @@ class EvtForm:
     def borrarRegistro(self, where = ""):
         if len(self.nombre.get())!=0 and len(self.hora.get())!=0 and len(self.lugar.get())!=0 and len(str(self.cal.get_date()))!=0:
             query="call BorrarEvento('" + self.mayus(self.nombre.get()) + "');"
-            self.consultaBD(query)
+            self.conn.consultaBD(query)
             self.nombre.delete(0,END)
             self.hora.delete(0,END)
             self.lugar.delete(0,END)
@@ -192,8 +177,8 @@ class EvtForm:
     def editarRegistro(self, where = ""):
         if len(self.nombre.get())!=0 and len(self.hora.get())!=0 and len(self.lugar.get())!=0 and len(str(self.cal.get_date()))!=0:
             query="UPDATE iglesia.evento SET nombre='" + self.mayus(self.nombre.get()) + "', fecha='" + str(self.cal.get_date()) + "', hora='" + self.hora.get() + "', lugar='" + self.mayus(self.lugar.get()) + "' where id='" + self.idViejo + "';"
-            self.consultaBD(query)
-            self.consultaBD(query)
+            self.conn.consultaBD(query)
+            self.conn.consultaBD(query)
             self.nombre.delete(0,END)
             self.hora.delete(0,END)
             self.lugar.delete(0,END)

@@ -2,7 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 
 from InfoColaboradores import colabinfo
-from Colabform import ColForm
+from Colabform import *
 from InfoAdol import adolinfo
 from Adolescentes import *
 from Eventos import EvtForm
@@ -18,7 +18,7 @@ def MenP(pw):
         AdolForm(pw).mostrarDatos()
         
     def cmd2():
-        ColForm(pw)
+        ColForm(pw).mostrarDatos()
 
     def cmd3():
         EvtForm(pw).mostrarDatos()

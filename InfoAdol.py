@@ -6,12 +6,14 @@ from Menu import *
 from tkinter import ttk
 from tkcalendar import *
 from datetime import datetime
+from Conexion import conexion
 import mariadb
 
 class adolinfo:
     
     def __init__(self,pw):
         self.w = Frame(pw,width=1200,height=675,bg='#707070')
+        self.conn = conexion()
         self.w.place(x=0, y=0)
         self.fuenteG = font=('Comic Sans MS', 19,'bold')
         self.fuenteP = font=('Comic Sans MS', 15,'bold')
@@ -135,33 +137,15 @@ class adolinfo:
         buttons.bind("<Leave>", on_leave)
         buttons.place(x=x, y=y)
         return buttons
-
-    #Metodos para ingresar a la base de datos
-    def consultaBD(self,query):
-        try:
-            conn=mariadb.connect(
-                host="localhost",
-                user="root",
-                password="123456789",
-                #password="Kamado_Tanjiro_12",
-                database="iglesia",
-                autocommit=True
-            )
-        except mariadb.Error as e:
-            print("Error al conectarse a la bd",e)
-        cur = conn.cursor()
-        id2=cur.execute(query)
-        print("PRIMERO   "+str(id2))
-        return cur
     
     def mostrarDatos(self,where=""):
         registro=self.tabladata.get_children()
         for registro in registro:
             self.tabladata.delete(registro)
         if len(where)>0:
-            cur=self.consultaBD("SELECT adolescente.id,adolescente.nombre, adolescente.genero, adolescente.fechanacimiento, infoemergencia.tiposangre, infoemergencia.encargado FROM iglesia.adolescente JOIN iglesia.infoemergencia ON adolescente.id = infoemergencia.adolescente_id " + where)
+            cur=self.conn.consultaBD("SELECT adolescente.id,adolescente.nombre, adolescente.genero, adolescente.fechanacimiento, infoemergencia.tiposangre, infoemergencia.encargado FROM iglesia.adolescente JOIN iglesia.infoemergencia ON adolescente.id = infoemergencia.adolescente_id " + where)
         else:
-            cur=self.consultaBD("SELECT adolescente.id,adolescente.nombre, adolescente.genero, adolescente.fechanacimiento, infoemergencia.tiposangre, infoemergencia.encargado FROM iglesia.adolescente JOIN iglesia.infoemergencia ON adolescente.id = infoemergencia.adolescente_id;")
+            cur=self.conn.consultaBD("SELECT adolescente.id,adolescente.nombre, adolescente.genero, adolescente.fechanacimiento, infoemergencia.tiposangre, infoemergencia.encargado FROM iglesia.adolescente JOIN iglesia.infoemergencia ON adolescente.id = infoemergencia.adolescente_id;")
         for (id,nombre,genero,fechanacimiento,tiposangre,encargado) in cur:
             self.tabladata.insert('',0,text=id,values=[nombre,genero,fechanacimiento,tiposangre,encargado])
 
@@ -178,7 +162,7 @@ class adolinfo:
             self.tablaAl.delete(i)
         #self.mostrarDatos()
         
-        cur=self.consultaBD("SELECT adolescente.nombre, adolescente.genero, adolescente.fechanacimiento, infoemergencia.tiposangre, infoemergencia.encargado FROM iglesia.adolescente JOIN iglesia.infoemergencia ON adolescente.id = infoemergencia.adolescente_id WHERE adolescente.id = '" + self.idViejo + "';")
+        cur=self.conn.consultaBD("SELECT adolescente.nombre, adolescente.genero, adolescente.fechanacimiento, infoemergencia.tiposangre, infoemergencia.encargado FROM iglesia.adolescente JOIN iglesia.infoemergencia ON adolescente.id = infoemergencia.adolescente_id WHERE adolescente.id = '" + self.idViejo + "';")
         for (nombre,genero,fechanacimiento,tiposangre,encargado) in cur:
             self.nombre.insert(0,nombre)
             self.genero.insert(0,genero)
@@ -186,11 +170,11 @@ class adolinfo:
             self.tipoSangre.insert(0,tiposangre)
             self.contacto.insert(0,encargado)
 
-        cur=self.consultaBD("SELECT telefono.id, telefono.telefono FROM iglesia.telefono JOIN iglesia.infoemergencia ON telefono.infoemergencia_id = infoemergencia.id JOIN iglesia.adolescente ON infoemergencia.adolescente_id = adolescente.id WHERE adolescente.id = '" + self.idViejo + "';")
+        cur=self.conn.consultaBD("SELECT telefono.id, telefono.telefono FROM iglesia.telefono JOIN iglesia.infoemergencia ON telefono.infoemergencia_id = infoemergencia.id JOIN iglesia.adolescente ON infoemergencia.adolescente_id = adolescente.id WHERE adolescente.id = '" + self.idViejo + "';")
         for (id, telefono) in cur:
             self.tablatel.insert('',0,text=id,values=telefono)
 
-        cur=self.consultaBD("SELECT alergia.id, alergia.detalle FROM iglesia.alergia JOIN iglesia.infoemergencia ON alergia.infoemergencia_id = infoemergencia.id JOIN iglesia.adolescente ON infoemergencia.adolescente_id = adolescente.id WHERE adolescente.id = '" + self.idViejo + "';")
+        cur=self.conn.consultaBD("SELECT alergia.id, alergia.detalle FROM iglesia.alergia JOIN iglesia.infoemergencia ON alergia.infoemergencia_id = infoemergencia.id JOIN iglesia.adolescente ON infoemergencia.adolescente_id = adolescente.id WHERE adolescente.id = '" + self.idViejo + "';")
         for (id, detalle) in cur:
             self.tablaAl.insert('',0,text=id,values=detalle)
         self.buscar.delete(0,END)
