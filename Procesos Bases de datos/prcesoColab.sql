@@ -97,3 +97,21 @@ BEGIN
 	END IF;
 END; //
 delimiter ;
+
+/*Borrar Colaborador:*/
+delimiter //
+DROP PROCEDURE IF EXISTS BorrarColaborador //
+CREATE PROCEDURE BorrarColaborador(cNombre VARCHAR(45))
+BEGIN
+    DECLARE IDNum INT DEFAULT 0;
+    SELECT id INTO IDNum FROM Colaborador WHERE Colaborador.Nombre = cNombre;
+    DELETE FROM Telefono WHERE Telefono.Colaborador_id = IDNum;
+    DELETE FROM AsistenciaColaborador WHERE AsistenciaColaborador.Colaborador_id = IDNum;
+    SELECT id INTO IDNum FROM InfoEmergencia WHERE InfoEmergencia.Colaborador_id = IDNum;
+    DELETE FROM Telefono WHERE Telefono.InfoEmergencia_id = IDNum;
+    DELETE FROM Alergia WHERE Alergia.InfoEmergencia_id = IDNum;
+    DELETE FROM InfoEmergencia WHERE InfoEmergencia.id = IDNum;
+    SELECT id INTO IDNum FROM Colaborador WHERE Colaborador.Nombre = cNombre;
+    DELETE FROM Colaborador WHERE Colaborador.id = IDNum;
+END; //
+delimiter ;

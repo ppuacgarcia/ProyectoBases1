@@ -86,6 +86,7 @@ class ColForm:
         self.tabladata.heading("col2",text="Genero",anchor=CENTER)
         self.tabladata.heading("col3",text="Edad",anchor=CENTER)
         self.tabladata.place(x=620,y=100)
+        self.tabladata.bind("<Double-Button-1>",self.doubleClickTabla)
         
     def cmd(self):
         self.w.destroy()
@@ -119,6 +120,7 @@ class ColForm:
         buttons.bind("<Enter>", on_enter)
         buttons.bind("<Leave>", on_leave)
         buttons.place(x=x, y=y)
+        return buttons
     
     def tb(self,x,y):
         tabla=Listbox(self.w)
@@ -198,7 +200,7 @@ class ColForm:
         self.Editar["state"]="normal"
         self.Borrar["state"]="normal"
         
-        cur=self.conn.consultaBD("SELECT adolescente.nombre, adolescente.genero, adolescente.fechanacimiento, infoemergencia.tiposangre, infoemergencia.encargado FROM iglesia.adolescente JOIN iglesia.infoemergencia ON adolescente.id = infoemergencia.adolescente_id WHERE adolescente.id = '" + self.idViejo + "';")
+        cur=self.conn.consultaBD("SELECT colaborador.nombre, colaborador.genero, colaborador.fechanacimiento, infoemergencia.tiposangre, infoemergencia.encargado FROM iglesia.colaborador JOIN iglesia.infoemergencia ON colaborador.id = infoemergencia.colaborador_id WHERE colaborador.id = '" + self.idViejo + "';")
         for (nombre,genero,fechanacimiento,tiposangre,encargado) in cur:
             self.nombre.insert(0,nombre)
             self.comboS.insert(0,genero)
@@ -208,7 +210,7 @@ class ColForm:
 
     def borrarRegistro(self, where = ""):
         if len(self.nombre.get())!=0 and len(self.contacto.get())!=0 and len(self.tipoSangre.get())!=0:
-            query="call BorrarAdolescente('" + self.mayus(self.nombre.get()) + "');"
+            query="call BorrarColaborador('" + self.mayus(self.nombre.get()) + "');"
             self.conn.consultaBD(query)
             self.nombre.delete(0,END)
             self.comboS.current(0)
@@ -231,15 +233,15 @@ class ColForm:
         
     def editarRegistro(self, where = ""):
         if len(self.nombre.get())!=0 and len(self.contacto.get())!=0 and len(self.tipoSangre.get())!=0:
-            query="UPDATE iglesia.adolescente SET nombre='" + self.mayus(self.nombre.get()) + "', genero='" + self.mayus(self.comboS.get()) + "', fechanacimiento='" + str(self.cal.get_date()) + "' where id='" + self.idViejo + "';"
+            query="UPDATE iglesia.Colaborador SET nombre='" + self.mayus(self.nombre.get()) + "', genero='" + self.mayus(self.comboS.get()) + "', fechanacimiento='" + str(self.cal.get_date()) + "' where id='" + self.idViejo + "';"
             self.conn.consultaBD(query)
-            query="UPDATE iglesia.infoemergencia SET tiposangre='" + self.mayus(self.tipoSangre.get()) + "', encargado='" + self.mayus(self.contacto.get()) +"' where adolescente_id='" + self.idViejo + "';"
+            query="UPDATE iglesia.infoemergencia SET tiposangre='" + self.mayus(self.tipoSangre.get()) + "', encargado='" + self.mayus(self.contacto.get()) +"' where Colaborador_id='" + self.idViejo + "';"
             self.conn.consultaBD(query)
             for telefono in self.listaTelefono.get(0,END):
-                query="call InsertarTIEA('" + self.mayus(self.nombre.get()) + "', '" + telefono + "');"
+                query="call InsertarTIEC('" + self.mayus(self.nombre.get()) + "', '" + telefono + "');"
                 self.conn.consultaBD(query)
             for alergia in self.listaAlergia.get(0,END):
-                query="call InsertarAA('" + self.mayus(self.nombre.get()) + "', '" + self.mayus(alergia) + "');"
+                query="call InsertarAC('" + self.mayus(self.nombre.get()) + "', '" + self.mayus(alergia) + "');"
                 self.conn.consultaBD(query)
             self.nombre.delete(0,END)
             self.comboS.current(0)
