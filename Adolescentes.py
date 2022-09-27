@@ -12,6 +12,8 @@ class AdolForm:
     
     def __init__(self,ventanaPrincipal):
         self.conn = conexion()
+        self.conn.autocommit = FALSE
+        self.conn.consultaBD("SAVEPOINT identifier")
         self.w = Frame(ventanaPrincipal,width=1200,height=675,bg='#707070')
         self.w.place(x=0, y=0)
         self.fuenteG = font=('Comic Sans MS', 19,'bold')
@@ -90,6 +92,7 @@ class AdolForm:
         None
         
     def cmd(self):
+        self.conn.commit()
         self.w.destroy()
 
     #Metodos para objetos del frame
@@ -176,6 +179,7 @@ class AdolForm:
             for alergia in self.listaAlergia.get(0,END):
                 query="call InsertarAA('" + self.mayus(self.nombre.get()) + "', '" + self.mayus(alergia) + "');"
                 self.conn.consultaBD(query)
+            self.conn.consultaBD("SAVEPOINT identifier")
         self.nombre.delete(0,END)
         self.genero.current(0)
         self.tipoSangre.delete(0,END)
