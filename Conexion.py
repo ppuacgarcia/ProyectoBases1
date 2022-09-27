@@ -18,21 +18,23 @@ class conexion:
         try:
             cur = self.conn.cursor()
             id2=cur.execute(query)
-            print("PRIMEROsss   "+str(id2))
+            print(str(id2))
             return cur
         except mariadb.Error as e:
                     print(e)
                     self.consultaRollback()
-        self.autocommit=False
+        
             
     def consultaRollback(self):
         try:
             curs = self.conn.cursor()
             id2=curs.execute('rollback to identifier')
-            print("rollback "+str(id2))
+            print("rollback ")
+            self.autocommit=False
             return curs
         except mariadb.Error as e:
-            print("error "+str(id2))
+            print("error ")
             print(e)
+        
     def commit(self):
         self.conn.commit()
