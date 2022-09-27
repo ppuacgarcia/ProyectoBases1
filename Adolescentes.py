@@ -179,7 +179,7 @@ class AdolForm:
             for alergia in self.listaAlergia.get(0,END):
                 query="call InsertarAA('" + self.mayus(self.nombre.get()) + "', '" + self.mayus(alergia) + "');"
                 self.conn.consultaBD(query)
-            self.conn.consultaBD("SAVEPOINT identifier")
+        self.conn.consultaBD("SAVEPOINT identifier")
         self.nombre.delete(0,END)
         self.genero.current(0)
         self.tipoSangre.delete(0,END)
@@ -192,6 +192,7 @@ class AdolForm:
         self.telefono.delete(0,END)
         self.telefonoadol.delete(0,END)
         self.mostrarDatos()
+        
 
     def mostrarDatos(self,where=""):
         registro=self.tabla.get_children()
