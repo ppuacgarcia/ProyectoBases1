@@ -10,10 +10,17 @@ import mariadb
 
 class AsisForm:
     
-    def __init__(self,pw, idEvento):
+    def __init__(self,pw, idEvento, conn):
         self.idEvento = idEvento
         self.w = Frame(pw,width=1200,height=675,bg='#707070')
-        self.conn = conexion()
+        self.conn = conn
+        self.conn.autocommit = FALSE
+        try:
+            with open('Query.txt', 'a') as f:
+                f.write("START TRANSACTION \n")
+        except FileNotFoundError:
+            print("The 'docs' directory does not exist")
+        self.conn.consultaBD("SAVEPOINT identifier")
         self.w.place(x=0, y=0)
         self.fuenteG = font=('Comic Sans MS', 19,'bold')
         self.fuenteP = font=('Comic Sans MS', 15,'bold')
@@ -112,6 +119,7 @@ class AsisForm:
 
     def confirmarAsistencia(self):
         self.conn.consultaBD("INSERT INTO AsistenciaAdolescente(Evento_id, Adolescente_id) VALUES(" + self.idEvento + ", " + self.idViejo + ")")
+        self.conn.consultaBD("SAVEPOINT identifier")
         self.mostrarDatos()
     
     def mostrarDatos(self,where=""):

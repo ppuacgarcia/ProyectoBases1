@@ -15,6 +15,13 @@ class EvtForm:
         self.principal = pw
         self.w = Frame(pw,width=1200,height=675,bg='#707070')
         self.conn = conexion()
+        self.conn.autocommit = FALSE
+        try:
+            with open('Query.txt', 'a') as f:
+                f.write("START TRANSACTION \n")
+        except FileNotFoundError:
+            print("The 'docs' directory does not exist")
+        self.conn.consultaBD("SAVEPOINT identifier")
         self.w.place(x=0, y=0)
         self.fuenteG = font=('Comic Sans MS', 19,'bold')
         self.fuenteP = font=('Comic Sans MS', 15,'bold')
@@ -63,6 +70,7 @@ class EvtForm:
         self.tabladata.bind("<Double-Button-1>",self.doubleClickTabla)
 
     def cmd(self):
+        self.conn.commit()
         self.w.destroy()
     
 
@@ -131,6 +139,7 @@ class EvtForm:
         if len(self.nombre.get())!=0 and len(self.hora.get())!=0 and len(self.lugar.get())!=0 and len(str(self.cal.get_date()))!=0:
             query="call InsertarEvento('" + self.mayus(self.nombre.get()) + "', '" + str(self.cal.get_date()) + "','" + self.hora.get() + "','" + self.mayus(self.lugar.get()) + "');"
             self.conn.consultaBD(query)
+            self.conn.consultaBD("SAVEPOINT identifier")
         self.nombre.delete(0,END)
         self.hora.delete(0,END)
         self.lugar.delete(0,END)
@@ -164,6 +173,7 @@ class EvtForm:
         if len(self.nombre.get())!=0 and len(self.hora.get())!=0 and len(self.lugar.get())!=0 and len(str(self.cal.get_date()))!=0:
             query="call BorrarEvento('" + self.mayus(self.nombre.get()) + "');"
             self.conn.consultaBD(query)
+            self.conn.consultaBD("SAVEPOINT identifier")
             self.nombre.delete(0,END)
             self.hora.delete(0,END)
             self.lugar.delete(0,END)
@@ -190,4 +200,4 @@ class EvtForm:
         self.borrar["state"]="disable"
 
     def Asistencia(self):
-        AsisForm(self.principal, self.idViejo).mostrarDatos()
+        AsisForm(self.principal, self.idViejo, self.conn).mostrarDatos()

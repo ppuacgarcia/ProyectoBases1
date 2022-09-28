@@ -13,6 +13,13 @@ class ColForm:
     def __init__(self,ventanaPrincipal):
         self.w = Frame(ventanaPrincipal,width=1200,height=675,bg='#707070')
         self.conn = conexion()
+        self.conn.autocommit = FALSE
+        try:
+            with open('Query.txt', 'a') as f:
+                f.write("START TRANSACTION \n")
+        except FileNotFoundError:
+            print("The 'docs' directory does not exist")
+        self.conn.consultaBD("SAVEPOINT identifier")
         self.w.place(x=0, y=0)
         self.fuenteG = font=('Comic Sans MS', 19,'bold')
         self.fuenteP = font=('Comic Sans MS', 15,'bold')
@@ -89,6 +96,7 @@ class ColForm:
         self.tabladata.bind("<Double-Button-1>",self.doubleClickTabla)
         
     def cmd(self):
+        self.conn.commit()
         self.w.destroy()
 
     #Labels formulario
@@ -177,6 +185,7 @@ class ColForm:
             for alergia in self.listaAlergia.get(0,END):
                 query="call InsertarAC('" +self.nombre.get() + "', '" + alergia + "');"
                 self.conn.consultaBD(query)
+            self.conn.consultaBD("SAVEPOINT identifier")
         self.nombre.focus()
         self.mostrarDatos()
 
@@ -224,6 +233,7 @@ class ColForm:
             self.Telefono1.delete(0,END)
             self.telefonoColab.delete(0,END)
             self.mostrarDatos()
+            self.conn.consultaBD("SAVEPOINT identifier")
         self.Guardar["state"]="normal"
         self.GuardarTel["state"]="normal"
         self.GuardarTelCol["state"]="normal"

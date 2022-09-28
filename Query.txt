@@ -47,3 +47,57 @@ START TRAN
 rollback to identifierSACTION
 SAVEPOINT identifier
 SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+START TRANSACTION 
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('FDSAFDSA', 'MASCULINO','2022-09-27');
+call InsertarIEA('FDSAFDSA', 'A', 'RERERERE');
+call InsertarTA('FDSAFDSA', '12');
+call InsertarTIEA('FDSAFDSA', '12');
+call InsertarAA('FDSAFDSA', 'E');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+Commit 
+START TRANSACTION 
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('MONO', 'MASCULINO','2022-09-27');
+call InsertarIEA('MONO', 'M', 'MONO');
+call InsertarTA('MONO', '12');
+call InsertarTA('MONO', '12344343434343');
+START TRANSACTION
+rollback to identifier
+call InsertarTIEA('MONO', '12');
+call InsertarTIEA('MONO', '1111111111111111111');
+START TRANSACTION
+rollback to identifier
+call InsertarAA('MONO', 'MONO');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('PEPE', 'MASCULINO','2022-09-27');
+call InsertarIEA('PEPE', 'P', 'PEPE');
+call InsertarTA('PEPE', '1111111111111111111');
+START TRANSACTION
+rollback to identifier
+call InsertarTIEA('PEPE', '1111111111111111111');
+START TRANSACTION
+rollback to identifier
+call InsertarAA('PEPE', 'A');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+Commit 
+START TRANSACTION 
+SAVEPOINT identifier
+SELECT id, nombre, fecha, hora, lugar FROM iglesia.evento ORDER BY fecha DESC
+SELECT id, nombre, fecha, hora, lugar FROM iglesia.evento ORDER BY fecha DESC
+SELECT nombre, fecha, hora, lugar FROM iglesia.evento WHERE evento.id = '2';
+START TRANSACTION 
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+SELECT adolescente.id, adolescente.nombre, adolescente.genero, adolescente.fechanacimiento FROM iglesia.evento INNER JOIN iglesia.asistenciaadolescente ON evento.id = asistenciaadolescente.evento_id INNER JOIN iglesia.adolescente ON asistenciaadolescente.adolescente_id = adolescente.id WHERE evento.id = 2
+INSERT INTO AsistenciaAdolescente(Evento_id, Adolescente_id) VALUES(2, 15)
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+SELECT adolescente.id, adolescente.nombre, adolescente.genero, adolescente.fechanacimiento FROM iglesia.evento INNER JOIN iglesia.asistenciaadolescente ON evento.id = asistenciaadolescente.evento_id INNER JOIN iglesia.adolescente ON asistenciaadolescente.adolescente_id = adolescente.id WHERE evento.id = 2
+Commit 
