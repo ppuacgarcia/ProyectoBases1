@@ -1,0 +1,49 @@
+START TRANSACTION 
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('z', 'MASCULINO','2022-09-27');
+call InsertarIEA('z', 'B1', 'ADSD');
+call InsertarTA('z', '3123');
+call InsertarTIEA('z', '213213');
+call InsertarAA('z', 'SDASD');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+Commit 
+START TRANSACTION 
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('zzz', 'MASCULINO','2022-09-27');
+call InsertarIEA('zzz', 'A', 'SDASDAS');
+call InsertarTA('zzz', '123213');
+call InsertarTIEA('zzz', '213213');
+call InsertarAA('zzz', 'DA');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('zzz', 'MASCULINO','2022-09-27');
+call InsertarIEA('zzz', 'zzz', 'zzz');
+call InsertarTA('zzz', 'zzz');
+call InsertarTIEA('zzz', 'zzz');
+call InsertarAA('zzz', 'zzz');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+Commit 
+START TRANSACTION 
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('zz', 'MASCULINO','2022-09-27');
+call InsertarIEA('zz', 'zz', 'zzz');
+call InsertarTA('zz', 'zzz');
+call InsertarTIEA('zz', 'zz');
+call InsertarAA('zz', 'zzz');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+Commit 
+START TRANSACTION 
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('SADSAD', 'MASCULINO','2022-09-27');
+call InsertarIEA('SADSAD', 'SADASDS', 'DASD');
+START TRAN
+rollback to identifierSACTION
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC

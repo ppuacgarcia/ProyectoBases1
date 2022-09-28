@@ -16,6 +16,11 @@ class conexion:
     
     def consultaBD(self,query):
         try:
+            with open('Query.txt', 'a') as f:
+                f.write(query+"\n")
+        except FileNotFoundError:
+                print("The 'docs' directory does not exist")
+        try:
             cur = self.conn.cursor()
             id2=cur.execute(query)
             print(str(id2))
@@ -23,14 +28,23 @@ class conexion:
         except mariadb.Error as e:
                     print(e)
                     self.consultaRollback()
+                    try:
+                        with open('Query.txt', 'a') as f:
+                            f.write("rollback to identifier\n")
+                    except FileNotFoundError:
+                        print("The 'docs' directory does not exist")
         
             
     def consultaRollback(self):
         try:
             curs = self.conn.cursor()
             id2=curs.execute('rollback to identifier')
-            print("rollback ")
             self.autocommit=False
+            try:
+                with open('Query.txt', 'a') as f:
+                            f.write("START TRANSACTION\n")
+            except FileNotFoundError:
+                        print("The 'docs' directory does not exist")
             return curs
         except mariadb.Error as e:
             print("error ")
@@ -38,3 +52,8 @@ class conexion:
         
     def commit(self):
         self.conn.commit()
+        try:
+            with open('Query.txt', 'a') as f:
+                f.write("Commit \n")
+        except FileNotFoundError:
+                print("The 'docs' directory does not exist")

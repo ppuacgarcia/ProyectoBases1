@@ -13,6 +13,11 @@ class AdolForm:
     def __init__(self,ventanaPrincipal):
         self.conn = conexion()
         self.conn.autocommit = FALSE
+        try:
+            with open('Query.txt', 'a') as f:
+                f.write("START TRANSACTION \n")
+        except FileNotFoundError:
+            print("The 'docs' directory does not exist")
         self.conn.consultaBD("SAVEPOINT identifier")
         self.w = Frame(ventanaPrincipal,width=1200,height=675,bg='#707070')
         self.w.place(x=0, y=0)
