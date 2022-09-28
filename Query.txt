@@ -101,3 +101,95 @@ SAVEPOINT identifier
 SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
 SELECT adolescente.id, adolescente.nombre, adolescente.genero, adolescente.fechanacimiento FROM iglesia.evento INNER JOIN iglesia.asistenciaadolescente ON evento.id = asistenciaadolescente.evento_id INNER JOIN iglesia.adolescente ON asistenciaadolescente.adolescente_id = adolescente.id WHERE evento.id = 2
 Commit 
+START TRANSACTION 
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('SDASD', 'MASCULINO','2022-09-27');
+call InsertarIEA('SDASD', 'D', 'DASD');
+call InsertarTA('SDASD', '1232');
+call InsertarTIEA('SDASD', '213213');
+call InsertarAA('SDASD', 'ASD');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('SDSAD', 'MASCULINO','2022-09-27');
+call InsertarIEA('SDSAD', 'A', 'ASD');
+call InsertarTA('SDSAD', '21321');
+call InsertarTIEA('SDSAD', '213213');
+call InsertarAA('SDSAD', 'A');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('ZZZ', 'MASCULINO','2022-09-27');
+call InsertarIEA('ZZZ', 'DA', 'DASD');
+START TRANSACTION
+rollback to identifier
+call InsertarTA('ZZZ', '213');
+call InsertarTIEA('ZZZ', '213213');
+call InsertarAA('ZZZ', 'A');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('213', 'MASCULINO','2022-09-27');
+call InsertarIEA('213', 'DASD', 'DDDDDD');
+call InsertarTA('213', '213213');
+call InsertarTIEA('213', '21321');
+call InsertarAA('213', 'ASD');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('QQQQQQQ', 'MASCULINO','2022-09-27');
+call InsertarIEA('QQQQQQQ', 'A', 'QQzzz');
+call InsertarTA('QQQQQQQ', '11111');
+call InsertarTIEA('QQQQQQQ', '123');
+call InsertarAA('QQQQQQQ', 'ASD');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+START TRANSACTION 
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('JUAN', 'MASCULINO','2022-09-27');
+call InsertarIEA('JUAN', 'A', 'DASD');
+call InsertarTA('JUAN', '123');
+call InsertarTIEA('JUAN', '213');
+call InsertarAA('JUAN', 'A');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+START TRANSACTION 
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('AAAA', 'MASCULINO','2022-09-27');
+call InsertarIEA('AAAA', 'A', 'DAS');
+call InsertarTA('AAAA', '123213');
+call InsertarTIEA('AAAA', '213');
+call InsertarAA('AAAA', 'SAD');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+START TRANSACTION 
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('PPPPABLO', 'MASCULINO','2022-09-27');
+call InsertarIEA('PPPPABLO', 'A', 'QQQQAN');
+call InsertarTA('PPPPABLO', '213');
+call InsertarTIEA('PPPPABLO', '123213');
+call InsertarAA('PPPPABLO', 'SAD');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+Commit 
+START TRANSACTION 
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('CARLOS ESTUARDO CANCINOS ', 'MASCULINO','2022-09-27');
+call InsertarIEA('CARLOS ESTUARDO CANCINOS ', 'B+', 'PABLO PUAC');
+call InsertarTA('CARLOS ESTUARDO CANCINOS ', '41008200');
+call InsertarTIEA('CARLOS ESTUARDO CANCINOS ', '77635251');
+call InsertarAA('CARLOS ESTUARDO CANCINOS ', 'MANIAS');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+Commit 
+START TRANSACTION 
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
+call InsertarAdolescente('1A', 'MASCULINO','2022-09-27');
+call InsertarIEA('1A', 'A', 'DASD');
+call InsertarTA('1A', '41');
+call InsertarTIEA('1A', '213213');
+call InsertarAA('1A', 'A');
+SAVEPOINT identifier
+SELECT id, nombre, genero, fechanacimiento FROM iglesia.adolescente ORDER BY nombre DESC
