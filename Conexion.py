@@ -1,12 +1,14 @@
 import mariadb
 class conexion:
-
+    
     def __init__(self):
+            passwordg=""
+            self.passwordg="123456789"
             try:
                 self.conn=mariadb.connect(
                     host="localhost",
                     user="root",
-                    password="123456789",
+                    password=self.passwordg,
                     #password="Kamado_Tanjiro_12",
                     database="iglesia",
                     autocommit=False
@@ -57,3 +59,5 @@ class conexion:
                 f.write("Commit \n")
         except FileNotFoundError:
                 print("The 'docs' directory does not exist")
+    def getPass(self):
+        return self.passwordg

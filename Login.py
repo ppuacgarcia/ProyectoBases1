@@ -3,14 +3,16 @@ from turtle import bgcolor, width
 from tkinter import *
 from PIL import Image, ImageTk
 from MenuPrincipal import *
-
+import os
+from datetime import datetime
+from Conexion import *
 pw = Tk()
 pw.geometry('1200x675')
 pw.configure(bg='#707070')
 pw.resizable(0,0)
 pw.title('Base de Datos')
 pw.iconbitmap('Images/Teen.ico')
-
+conn = conexion()
 fonttxt = 'Arial'
 posx=430
 posy=100
@@ -28,7 +30,12 @@ def Correcto():
     else:
         
         print("no entro")
-        
+def hi(x = None, y = None, event = None):
+    #print(conn.getPass+"contrasenia")
+    now = datetime.now() # current date and time
+    inst='mysqldump -u root -p'+conn.getPass()+' iglesia >backup/bkup'+str(now.strftime("%m-%d-%Y_%H-%M-%S"))+'.sql'
+    os.system(inst)
+pw.bind_all("<F12>", hi)       
         
 
 #Labels
